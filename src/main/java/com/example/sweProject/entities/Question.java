@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 @Table(name="QUESTIONS")
 public class Question {
   @Id
+  @Column(name="ID")
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private Integer id;
 
@@ -24,6 +25,8 @@ public class Question {
   // @Column(name="ANSWER")
   // private String answer;
 
+
+ @Id
   public Integer getId() {
     return this.id;
   }
