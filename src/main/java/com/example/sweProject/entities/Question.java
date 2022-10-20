@@ -1,4 +1,4 @@
-package com.example.questionnaireapi.entities;
+package com.example.sweProject.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,11 +18,11 @@ public class Question {
   @Column(name="NAME")
   private String name;
 
-  @Column(name="CHOICES")
-  private String[] choices;
+  // @Column(name="CHOICES")
+  // private String[] choices;
 
-  @Column(name="ANSWER")
-  private String answer;
+  // @Column(name="ANSWER")
+  // private String answer;
 
   public Integer getId() {
     return this.id;
@@ -32,25 +32,25 @@ public class Question {
     return this.name;
   }
 
-  public String[] getChoices() {
-    return this.choices;
-  }
+  // public String[] getChoices() {
+  //   return this.choices;
+  // }
 
-  public String getAnswer() {
-    return this.answer;
-  }
+  // public String getAnswer() {
+  //   return this.answer;
+  // }
 
   public void setName(String name) {
     this.name = name;
   }
 
-  public void setChoices(String[] choices) {
-    this.choices = choices;
-  }
+  // public void setChoices(String[] choices) {
+  //   this.choices = choices;
+  // }
 
-  public void setAnswer(String answer) {
-    this.answer = answer;
-  }
+  // public void setAnswer(String answer) {
+  //   this.answer = answer;
+  // }
 }
 
 
