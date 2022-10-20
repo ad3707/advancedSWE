@@ -1,3 +1,0 @@
-2022-10-20 16:35:26 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "QUESTIONS" not found (this database is empty); SQL statement:
-select question0_.id as id1_0_, question0_.answer as answer2_0_, question0_.choices as choices3_0_, question0_.name as name4_0_ from questions question0_ [42104-214]
