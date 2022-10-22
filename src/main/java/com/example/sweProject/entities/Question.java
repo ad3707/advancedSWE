@@ -12,21 +12,31 @@ import javax.persistence.GenerationType;
 @Table(name="QUESTIONS")
 public class Question {
   @Id
-  @Column(name="ID")
-  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  // @Column(name="ID")
+  @GeneratedValue
   private Integer id;
 
   @Column(name="NAME")
   private String name;
 
+  @Column(name="A")
+  private String a;
+
+  @Column(name="B")
+  private String b;
+
+  @Column(name="C")
+  private String c;
+
+  @Column(name="D")
+  private String d;
+
   // @Column(name="CHOICES")
   // private String[] choices;
 
-  // @Column(name="ANSWER")
-  // private String answer;
+  @Column(name="ANSWER")
+  private String answer;
 
-
- @Id
   public Integer getId() {
     return this.id;
   }
@@ -39,9 +49,22 @@ public class Question {
   //   return this.choices;
   // }
 
-  // public String getAnswer() {
-  //   return this.answer;
-  // }
+  public String getA() {
+    return this.a;
+  }
+  public String getB() {
+    return this.b;
+  }
+  public String getC() {
+    return this.c;
+  }
+  public String getD() {
+    return this.d;
+  }
+
+  public String getAnswer() {
+    return this.answer;
+  }
 
   public void setId(Integer id) {
     this.id = id;
@@ -55,9 +78,25 @@ public class Question {
   //   this.choices = choices;
   // }
 
-  // public void setAnswer(String answer) {
-  //   this.answer = answer;
-  // }
+  public void setA(String a) {
+    this.a = a;
+  }
+
+  public void setB(String b) {
+    this.b = b;
+  }
+
+  public void setC(String c) {
+    this.c = c;
+  }
+
+  public void setD(String d) {
+    this.d = d;
+  }
+
+  public void setAnswer(String answer) {
+    this.answer = answer;
+  }
 }
 
 

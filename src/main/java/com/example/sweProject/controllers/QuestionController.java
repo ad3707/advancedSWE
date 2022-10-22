@@ -43,27 +43,39 @@ public class QuestionController{
         return newQuestion;
     }
 
-    // @PutMapping("/update/{id}")
-    // public Question updateQuestion(@PathVariable("id") Integer id, @RequestBody Question p) {
-    //     Optional<Question> questionToUpdateOptional = this.questionRepository.findById(id);
-    //     if (!questionToUpdateOptional.isPresent()) {
-    //         return null;
-    //     }
+    @PutMapping("/update/{id}")
+    public Question updateQuestion(@PathVariable("id") Integer id, @RequestBody Question p) {
+        Optional<Question> questionToUpdateOptional = this.questionRepository.findById(id);
+        if (!questionToUpdateOptional.isPresent()) {
+            return null;
+        }
 
-    //     Question questionToUpdate = questionToUpdateOptional.get();
-    //     if (p.getName() != null) {
-    //         questionToUpdate.setName(p.getName());
-    //     }
-    //     if (p.getChoices() != null) {
-    //         questionToUpdate.setChoices(p.getChoices());
-    //     }
-    //     if (p.getAnswer() != null) {
-    //         questionToUpdate.setAnswer(p.getAnswer());
-    //     }
+        Question questionToUpdate = questionToUpdateOptional.get();
+        if (p.getName() != null) {
+            questionToUpdate.setName(p.getName());
+        }
+        // if (p.getChoices() != null) {
+        //     questionToUpdate.setChoices(p.getChoices());
+        // }
+        if (p.getA() != null) {
+            questionToUpdate.setA(p.getA());
+        }
+        if (p.getB() != null) {
+            questionToUpdate.setB(p.getB());
+        }
+        if (p.getC() != null) {
+            questionToUpdate.setC(p.getC());
+        }
+        if (p.getD() != null) {
+            questionToUpdate.setD(p.getD());
+        }
+        if (p.getAnswer() != null) {
+            questionToUpdate.setAnswer(p.getAnswer());
+        }
 
-    //     Question updatedQuestion = this.questionRepository.save(questionToUpdate);
-    //     return updatedQuestion;
-    // }
+        Question updatedQuestion = this.questionRepository.save(questionToUpdate);
+        return updatedQuestion;
+    }
 
     @DeleteMapping("/delete/{id}")
     public Question deleteQuestion(@PathVariable("id") Integer id) {
