@@ -3,6 +3,8 @@ package com.example.sweProject.controllers;
 import java.util.*;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,11 +43,17 @@ public class QuestionController{
 
     @PostMapping("/questions")
     public Question createNewQuestion(@RequestBody Question question){
+        // should handle empty request body, bad request body, and good request body
         Question newQuestion = this.questionRepository.save(question);
         return newQuestion;
     }
+        // public ResponseEntity<Question> createNewQuestion (@RequestBody Question question){
+    //     //code
+    //     Question newQuestion = this.questionRepository.save(question);
+    //     return new ResponseEntity<Question>(newQuestion, HttpStatus.CREATED);
+    // }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/questions/{id}")
     public Question updateQuestion(@PathVariable("id") Integer id, @RequestBody Question p) {
         Optional<Question> questionToUpdateOptional = this.questionRepository.findById(id);
         if (!questionToUpdateOptional.isPresent()) {
@@ -79,7 +87,7 @@ public class QuestionController{
         return updatedQuestion;
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/questions/{id}")
     public Question deleteQuestion(@PathVariable("id") Integer id) {
         Optional<Question> questionToDeleteOptional = this.questionRepository.findById(id);
         if (!questionToDeleteOptional.isPresent()) {
