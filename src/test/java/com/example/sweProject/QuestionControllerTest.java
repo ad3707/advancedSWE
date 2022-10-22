@@ -23,6 +23,9 @@ import org.springframework.http.MediaType;
 import static org.hamcrest.core.Is.is;
 
 import java.util.*;
+
+import javax.transaction.Transactional;
+
 import static java.util.Collections.singletonList;
 
 
@@ -60,9 +63,17 @@ public class QuestionControllerTest {
    //Test for the POST json request. Tests if a user can add a question
    @Test
    public void createQuestionAPI() throws Exception {
+      Question question = new Question();
+       question.setName("What is 1+1?");
+       question.setA("1");
+       question.setB("2");
+       question.setC("3");
+       question.setD("4");
+       question.setAnswer("A");
+
       mvc.perform( MockMvcRequestBuilders
                .post("/questions")
-               .content(asJsonString(new newQuestion("question", "choiceA", "choiceB", "choiceC", "choiceD","answer")))
+               .content(asJsonString(question))
                .contentType(MediaType.APPLICATION_JSON))
                .andExpect(status().isCreated())
                .andExpect(MockMvcResultMatchers.jsonPath("$.questionID").exists());
@@ -79,19 +90,29 @@ public class QuestionControllerTest {
 
 //Test for the PUT API. Tests if client can update a question
   @Test
+  @Transactional //ensures that the interactions you have with the database are rolled back at the end of each test.
   public void updateQuestioAPI() throws Exception {
+
+   Question question = new Question();
+   question.setName("What is 1+2?");
+   question.setA("1");
+   question.setB("2");
+   question.setC("3");
+   question.setD("4");
+   question.setAnswer("C");
+
    mvc.perform( MockMvcRequestBuilders
                .put("/update/{id}",3)
-               .content(asJsonString(new newQuestion(3,"1 + 2","3","4","5","6","3")))
+               .content(asJsonString(question))
                .contentType(MediaType.APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
-               .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("1 + 2"))
-               .andExpect(MockMvcResultMatchers.jsonPath("$.a").value("3"))
-               .andExpect(MockMvcResultMatchers.jsonPath("$.b").value("4"))
-               .andExpect(MockMvcResultMatchers.jsonPath("$.c").value("5"))
-               .andExpect(MockMvcResultMatchers.jsonPath("$.d").value("6"))
-               .andExpect(MockMvcResultMatchers.jsonPath("$.answer").value("3"));
+               .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("What is 1+2?"))
+               .andExpect(MockMvcResultMatchers.jsonPath("$.a").value("1"))
+               .andExpect(MockMvcResultMatchers.jsonPath("$.b").value("2"))
+               .andExpect(MockMvcResultMatchers.jsonPath("$.c").value("3"))
+               .andExpect(MockMvcResultMatchers.jsonPath("$.d").value("4"))
+               .andExpect(MockMvcResultMatchers.jsonPath("$.answer").value("C"));
   }
 
 
