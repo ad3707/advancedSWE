@@ -8,17 +8,35 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
+
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.ResponseEntity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willReturn;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+// import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.aspectj.lang.annotation.Before;
+import org.json.simple.JSONObject;    
+
+// import static org.junit.jupiter.api.Assertions.assertNotNull;
+// import static org.junit.jupiter.api.Assertions.assertTrue;
+// import org.junit.*;
+// import static org.mockito.Mockito.*;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import static org.hamcrest.core.Is.is;
 
@@ -39,89 +57,125 @@ public class QuestionControllerTest {
    private QuestionController questionController;
 
     //Test to see that a client receives all the questions in the database
-   @Test
-   public void getQuestions() throws Exception {
-       Question q = new Question();
-       q.setName("What is 1+1?");
-       q.setA("1");
-       q.setB("2");
-       q.setC("3");
-       q.setD("4");
-       q.setAnswer("A");
+    @Test
+    public void getQuestions() throws Exception {
+        // Question q = new Question();
+        // q.setName("What is 1+1?");
+        // q.setA("1");
+        // q.setB("2");
+        // q.setC("3");
+        // q.setD("4");
+        // q.setAnswer("A");
 
-       List allQuestions = singletonList(q);
+        // questionController = mock(QuestionController.class);
 
-       given(questionController.getAllQuestions()).willReturn(allQuestions);
+        List allQuestions = singletonList(new Question(null, "What is 1+1?", "1","2","3","4","A"));
 
-       mvc.perform(get("/questions")
-               .contentType("application/json"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("name", is(q.getName())))
-               .andExpect(jsonPath("A", is(q.getA())));
-   }
+        given(questionController.getAllQuestions()).willReturn(allQuestions);
+
+        mvc.perform(get("/questions")
+                //  .contentType("application/json"))
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is("What is 1+1?")))
+                .andExpect(jsonPath("$[0].a", is("1")));
+    }
 
    //Test for the POST json request. Tests if a user can add a question
    @Test
-   public void createQuestionAPI() throws Exception {
-      Question question = new Question();
-       question.setName("What is 1+1?");
-       question.setA("1");
-       question.setB("2");
-       question.setC("3");
-       question.setD("4");
-       question.setAnswer("A");
+   public void testPostQuestion() throws Exception {
+
+    Question q = new Question(1, "new question", "1", "2", "3", "4", "A");
+    given(questionController.getAllQuestions()).willReturn(singletonList(q));
+    given(questionController.createNewQuestion(q)).willReturn(q);
+
+    mvc.perform( MockMvcRequestBuilders
+        .post("/questions")
+        .content(asJsonString(q))
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+
+    mvc.perform(get("/questions")
+        .accept("application/json"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].name", is("new question")))
+        .andExpect(jsonPath("$[0].a", is("1")));
+   }
+
+   
+   // act, arrange, assert
+
+   @Test
+   public void createQuestionAPI() throws Exception {      
+      Question question = new Question(30,"What is 1+1?","1","2","3","4","c");
+    //    question.setId(30);
+    //    question.setName("What is 1+1?");
+    //    question.setA("1");
+    //    question.setB("2");
+    //    question.setC("3");
+    //    question.setD("4");
+    //    question.setAnswer("c");
+
+      given(questionController.createNewQuestion(question)).willReturn(question);
 
       mvc.perform( MockMvcRequestBuilders
                .post("/questions")
                .content(asJsonString(question))
-               .contentType(MediaType.APPLICATION_JSON))
-               .andExpect(status().isCreated())
-               .andExpect(MockMvcResultMatchers.jsonPath("$.questionID").exists());
+               .contentType("application/json"))
+               .andExpect(status().isOk());
+               //.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
    }
 
-   public static String asJsonString(final Object obj) {
+   public static String asJsonString(final Object question) {
       try {
-          return new ObjectMapper().writeValueAsString(obj);
+          return new ObjectMapper().writeValueAsString(question);
       } catch (Exception e) {
           throw new RuntimeException(e);
       }
   }
 
 
-//Test for the PUT API. Tests if client can update a question
-  @Test
-  @Transactional //ensures that the interactions you have with the database are rolled back at the end of each test.
-  public void updateQuestioAPI() throws Exception {
+  //Test for the PUT API. Tests if client can update a question
+  // @Test
+  // @Transactional //ensures that the interactions you have with the database are rolled back at the end of each test
+  // public void updateQuestionAPI() throws Exception {
 
-   Question question = new Question();
-   question.setName("What is 1+2?");
-   question.setA("1");
-   question.setB("2");
-   question.setC("3");
-   question.setD("4");
-   question.setAnswer("C");
+  //   Question question = new Question();
+  //   question.setId(20);
+  //   question.setName("What is 1+1?");
+  //   question.setA("1");
+  //   question.setB("2");
+  //   question.setC("3");
+  //   question.setD("4");
+  //   question.setAnswer("a");j
 
-   mvc.perform( MockMvcRequestBuilders
-               .put("/update/{id}",3)
-               .content(asJsonString(question))
-               .contentType(MediaType.APPLICATION_JSON)
-               .accept(MediaType.APPLICATION_JSON))
-               .andExpect(status().isOk())
-               .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("What is 1+2?"))
-               .andExpect(MockMvcResultMatchers.jsonPath("$.a").value("1"))
-               .andExpect(MockMvcResultMatchers.jsonPath("$.b").value("2"))
-               .andExpect(MockMvcResultMatchers.jsonPath("$.c").value("3"))
-               .andExpect(MockMvcResultMatchers.jsonPath("$.d").value("4"))
-               .andExpect(MockMvcResultMatchers.jsonPath("$.answer").value("C"));
-  }
+  //   JSONObject newQuestion = new JSONObject();    
+  //   newQuestion.put("name", "What is 1+2?");    
+  //   newQuestion.put("a", "1");    
+  //   newQuestion.put("b", "2");    
+  //   newQuestion.put("c", "3");    
+  //   newQuestion.put("d", "4");    
+  //   newQuestion.put("answer", "c");    
 
+  //   mvc.perform(put("/questions/{id}",20)
+  //              .content(newQuestion.toJSONString())
+  //              .contentType(MediaType.APPLICATION_JSON)
+  //              .accept(MediaType.APPLICATION_JSON))
+  //              .andExpect(status().isOk())
+  //              .andExpect(jsonPath("$.name", is("What is 1+2?")))
+  //              .andExpect(jsonPath("$.a").value("1"))
+  //              .andExpect(jsonPath("$.b").value("2"))
+  //              .andExpect(jsonPath("$.c").value("3"))
+  //              .andExpect(jsonPath("$.d").value("4"))
+  //              .andExpect(jsonPath("$.answer").value("c"));
+  // }
 
+// //Test for the DELETE API. Tests if a client can delete a quesiton.
+// @Test
+// public void deleteQuestionAPI() throws Exception {
+//    mvc.perform( MockMvcRequestBuilders.delete("/delete/{id}",3))
+//                .andExpect(status().isAccepted());
+//    }
 
-//Test for the DELETE API. Tests if a client can delete a quesiton.
-@Test
-public void deleteQuestionAPI() throws Exception {
-   mvc.perform( MockMvcRequestBuilders.delete("/delete/{id}",3))
-               .andExpect(status().isAccepted());
-   }
-  
 }
