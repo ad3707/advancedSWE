@@ -12,6 +12,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
+
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.ResponseEntity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -20,8 +23,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willReturn;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+// import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.aspectj.lang.annotation.Before;
 import org.json.simple.JSONObject;    
+
+// import static org.junit.jupiter.api.Assertions.assertNotNull;
+// import static org.junit.jupiter.api.Assertions.assertTrue;
+// import org.junit.*;
+// import static org.mockito.Mockito.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -46,15 +59,17 @@ public class QuestionControllerTest {
     //Test to see that a client receives all the questions in the database
     @Test
     public void getQuestions() throws Exception {
-        Question q = new Question();
-        q.setName("What is 1+1?");
-        q.setA("1");
-        q.setB("2");
-        q.setC("3");
-        q.setD("4");
-        q.setAnswer("A");
+        // Question q = new Question();
+        // q.setName("What is 1+1?");
+        // q.setA("1");
+        // q.setB("2");
+        // q.setC("3");
+        // q.setD("4");
+        // q.setAnswer("A");
 
-        List allQuestions = singletonList(q);
+        // questionController = mock(QuestionController.class);
+
+        List allQuestions = singletonList(new Question(null, "What is 1+1?", "1","2","3","4","A"));
 
         given(questionController.getAllQuestions()).willReturn(allQuestions);
 
@@ -62,24 +77,45 @@ public class QuestionControllerTest {
                 //  .contentType("application/json"))
                 .accept("application/json"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is(q.getName())))
-                .andExpect(jsonPath("$[0].a", is(q.getA())));
+                .andExpect(jsonPath("$[0].name", is("What is 1+1?")))
+                .andExpect(jsonPath("$[0].a", is("1")));
     }
 
    //Test for the POST json request. Tests if a user can add a question
+   @Test
+   public void testPostQuestion() throws Exception {
 
+    Question q = new Question(1, "new question", "1", "2", "3", "4", "A");
+    given(questionController.getAllQuestions()).willReturn(singletonList(q));
+    given(questionController.createNewQuestion(q)).willReturn(q);
+
+    mvc.perform( MockMvcRequestBuilders
+        .post("/questions")
+        .content(asJsonString(q))
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+
+    mvc.perform(get("/questions")
+        .accept("application/json"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].name", is("new question")))
+        .andExpect(jsonPath("$[0].a", is("1")));
+   }
+
+   
    // act, arrange, assert
 
    @Test
    public void createQuestionAPI() throws Exception {      
-      Question question = new Question();
-       question.setId(30);
-       question.setName("What is 1+1?");
-       question.setA("1");
-       question.setB("2");
-       question.setC("3");
-       question.setD("4");
-       question.setAnswer("c");
+      Question question = new Question(30,"What is 1+1?","1","2","3","4","c");
+    //    question.setId(30);
+    //    question.setName("What is 1+1?");
+    //    question.setA("1");
+    //    question.setB("2");
+    //    question.setC("3");
+    //    question.setD("4");
+    //    question.setAnswer("c");
 
       given(questionController.createNewQuestion(question)).willReturn(question);
 

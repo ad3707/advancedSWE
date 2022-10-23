@@ -37,6 +37,16 @@ public class Question {
   @Column(name="ANSWER")
   private String answer;
 
+  public Question(Integer id, String name, String a, String b, String c, String d, String answer){
+    this.id = id;
+    this.name = name;
+    this.a = a;
+    this.b = b;
+    this.c = c;
+    this.d = d;
+    this.answer = answer;
+  }
+
   public Integer getId() {
     return this.id;
   }
