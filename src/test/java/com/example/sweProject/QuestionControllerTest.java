@@ -64,7 +64,6 @@ public class QuestionControllerTest {
 
     //Test to see that a client receives all the questions in the database
     @Test
-    @Transactional
     public void testGetQuestions() throws Exception {
         Question q  = new Question(2, "What is 1+1?", "1","2","3","4","A");
         List<Question> allQuestions = new ArrayList<Question>();
@@ -109,28 +108,26 @@ public class QuestionControllerTest {
    }
 
     //Tests if client can update a question
-    // @Test
-    // @Transactional //ensures that the interactions you have with the database are rolled back at the end of each test
-    // public void testUpdateQuestions() throws Exception {
-    //     Question newQuestion = new Question(31, "What is 1+2?","1","2","3","4","C");
+    @Test
+    @Transactional //ensures that the interactions you have with the database are rolled back at the end of each test
+    public void testUpdateQuestions() throws Exception {
+        Question newQuestion = new Question(31, "What is 1+2?","1","2","3","4","C");
         
-    //     when(questionRepo.updateQuestion(any())).thenReturn(q);
-
-    //     given(questionController.updateQuestion(31, newQuestion)).willReturn(newQuestion);
+        when(questionRepo.findById(any())).thenReturn(Optional.of(newQuestion));
     
-    //     mvc.perform(put("/questions/{id}", 31)
-    //             .content(asJsonString(newQuestion))
-    //             .contentType("application/json")
-    //             .accept("application/json"))
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.id").exists())
-    //             .andExpect(jsonPath("$.name", is("What is 1+2?")))
-    //             .andExpect(jsonPath("$.a").value("1"))
-    //             .andExpect(jsonPath("$.b").value("2"))
-    //             .andExpect(jsonPath("$.c").value("3"))
-    //             .andExpect(jsonPath("$.d").value("4"))
-    //             .andExpect(jsonPath("$.answer").value("c"));
-    // }
+        mvc.perform(put("/questions/{id}", 31)
+                .content(asJsonString(newQuestion))
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name", is("What is 1+2?")))
+                .andExpect(jsonPath("$.a").value("1"))
+                .andExpect(jsonPath("$.b").value("2"))
+                .andExpect(jsonPath("$.c").value("3"))
+                .andExpect(jsonPath("$.d").value("4"))
+                .andExpect(jsonPath("$.answer").value("c"));
+    }
 
 // //Test for the DELETE API. Tests if a client can delete a quesiton.
 // @Test

@@ -69,5 +69,15 @@ public class User {
     public void incrementCorrect(){
         this.correct++;
     }
+
+    public User(){
+  }
+
+  public User(Integer id, String name, Integer attempted, Integer correct){
+    this.id = id;
+    this.name = name;
+    this.attempted = attempted;
+    this.correct = correct;
+  }
 }
 
