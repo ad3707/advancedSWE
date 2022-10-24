@@ -1,4 +1,4 @@
-/*
+
 package com.example.sweProject.entities;
 
 import javax.persistence.Column;
@@ -71,6 +71,3 @@ public class User {
     }
 }
 
-
-
-*/
