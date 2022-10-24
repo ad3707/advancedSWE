@@ -11,8 +11,11 @@ import javax.persistence.GenerationType;
 @Entity
 @Table(name="QUESTIONS")
 public class Question {
+
+  // Instance Variables
+
   @Id
-  @GeneratedValue
+  @GeneratedValue // id is automatically generated when new Question is created via POST
   private Integer id;
 
   @Column(name="NAME")
@@ -33,6 +36,8 @@ public class Question {
   @Column(name="ANSWER")
   private String answer;
 
+  // Controllers
+
   public Question(){
   }
 
@@ -45,6 +50,8 @@ public class Question {
     this.d = d;
     this.answer = answer;
   }
+
+  // Getters
 
   public Integer getId() {
     return this.id;
@@ -70,6 +77,8 @@ public class Question {
   public String getAnswer() {
     return this.answer;
   }
+
+  // Setters
 
   public void setId(Integer id) {
     this.id = id;

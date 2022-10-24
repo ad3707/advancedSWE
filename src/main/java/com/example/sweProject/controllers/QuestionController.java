@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.sweProject.entities.Question;
 import com.example.sweProject.repositories.QuestionRepository;
 
-
 @RestController
 public class QuestionController{
     private final QuestionRepository questionRepository;
@@ -22,6 +21,8 @@ public class QuestionController{
     public QuestionController(final QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
     }
+
+    // GET Mappings
 
     @GetMapping(value="/questions", produces="application/json")
     public @ResponseBody Iterable<Question> getAllQuestions(){
@@ -34,23 +35,33 @@ public class QuestionController{
         return this.questionRepository.findById(id);
     }
 
+    // POST Mappings
+
     @PostMapping(value="/questions", produces="application/json")
     public @ResponseBody Question createNewQuestion(@RequestBody Question question){
+
         // should handle empty request body, bad request body, and good request body
-        System.out.println(question);
         Question newQuestion = this.questionRepository.save(question);
         return newQuestion;
     }
 
+    // PUT Mappings
+
     @PutMapping("/questions/{id}")
     public Question updateQuestion(@PathVariable("id") Integer id, @RequestBody Question p) {
+
+        // check if question with {id} exists in database
         Optional<Question> questionToUpdateOptional = this.questionRepository.findById(id);
+
+        // if question with {id} does not exist in database, return null
         if (!questionToUpdateOptional.isPresent()) {
             return null;
         }
 
+        // otherwise: if question with {id} exists, retrieve Question object from questionToUpdateOptional
         Question questionToUpdate = questionToUpdateOptional.get();
 
+        // update instance variables if not null
         if (p.getName() != null) {
             questionToUpdate.setName(p.getName());
         }
@@ -70,20 +81,28 @@ public class QuestionController{
             questionToUpdate.setAnswer(p.getAnswer());
         }
 
+        // saves update in database
         this.questionRepository.save(questionToUpdate);
 
         return questionToUpdate;
     }
 
+    // DELETE Mappings
+
     @DeleteMapping("/questions/{id}")
     public Question deleteQuestion(@PathVariable("id") Integer id) {
+
+        // check if question with {id} exists in database
         Optional<Question> questionToDeleteOptional = this.questionRepository.findById(id);
+        
+        // if {id} does not exist in database, return null
         if (!questionToDeleteOptional.isPresent()) {
             return null;
         }
-        
+
+        // otherwise: if {id} exists, retrieve Question object from questionToDeleteOptional
         Question questionToDelete = questionToDeleteOptional.get();
         this.questionRepository.delete(questionToDelete);
-        return questionToDelete;
+        return questionToDelete; // returns object that was deleted
     }
 }
