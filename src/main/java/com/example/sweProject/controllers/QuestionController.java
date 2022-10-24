@@ -1,5 +1,6 @@
 package com.example.sweProject.controllers;
 
+import java.io.ByteArrayOutputStream;
 import java.util.*;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -12,11 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 // import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.sweProject.entities.Question;
 import com.example.sweProject.repositories.QuestionRepository;
-
-import antlr.debug.NewLineListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @RestController
 public class QuestionController{
@@ -26,14 +28,32 @@ public class QuestionController{
         this.questionRepository = questionRepository;
     }
 
-    @GetMapping("/helloworld")
-    public String helloWorld() {
-        return "Hello World!";
-    }
+    @GetMapping(value="/questions", produces="application/json")
+    public @ResponseBody Iterable<Question> getAllQuestions(){
+        Iterable<Question> questions = this.questionRepository.findAll();
 
-    @GetMapping("/questions")
-    public Iterable<Question> getAllQuestions() {
-        return this.questionRepository.findAll();
+        // List<Question> result = new ArrayList<Question>();
+        // questions.forEach(result::add);
+        // questions.forEach((Question item) -> System.out.println("HELLO:::" + item));
+
+        // System.out.println("BUFFALO:::" + result.get(0));
+
+        // ObjectMapper objectMapper = new ObjectMapper();
+        // objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        // ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        // try {
+        //     objectMapper.writeValue(out, result);
+        // } catch (Exception error){
+        //     error.printStackTrace();
+        // }
+
+        // final byte[] data = out.toByteArray();
+
+        // System.out.println("ALL QUESTIONS::: " + new String(data));
+        
+        return questions;
     }
 
     @GetMapping("/questions/{id}")
@@ -41,9 +61,10 @@ public class QuestionController{
         return this.questionRepository.findById(id);
     }
 
-    @PostMapping("/questions")
-    public Question createNewQuestion(@RequestBody Question question){
+    @PostMapping(value="/questions", produces="application/json")
+    public @ResponseBody Question createNewQuestion(@RequestBody Question question){
         // should handle empty request body, bad request body, and good request body
+        System.out.println(question);
         Question newQuestion = this.questionRepository.save(question);
         return newQuestion;
     }
@@ -61,12 +82,10 @@ public class QuestionController{
         }
 
         Question questionToUpdate = questionToUpdateOptional.get();
+
         if (p.getName() != null) {
             questionToUpdate.setName(p.getName());
         }
-        // if (p.getChoices() != null) {
-        //     questionToUpdate.setChoices(p.getChoices());
-        // }
         if (p.getA() != null) {
             questionToUpdate.setA(p.getA());
         }

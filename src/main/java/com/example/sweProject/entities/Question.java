@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 @Table(name="QUESTIONS")
 public class Question {
   @Id
-  // @Column(name="ID")
   @GeneratedValue
   private Integer id;
 
@@ -31,11 +30,11 @@ public class Question {
   @Column(name="D")
   private String d;
 
-  // @Column(name="CHOICES")
-  // private String[] choices;
-
   @Column(name="ANSWER")
   private String answer;
+
+  public Question(){
+  }
 
   public Question(Integer id, String name, String a, String b, String c, String d, String answer){
     this.id = id;
@@ -54,10 +53,6 @@ public class Question {
   public String getName() {
     return this.name;
   }
-
-  // public String[] getChoices() {
-  //   return this.choices;
-  // }
 
   public String getA() {
     return this.a;
@@ -83,10 +78,6 @@ public class Question {
   public void setName(String name) {
     this.name = name;
   }
-
-  // public void setChoices(String[] choices) {
-  //   this.choices = choices;
-  // }
 
   public void setA(String a) {
     this.a = a;
