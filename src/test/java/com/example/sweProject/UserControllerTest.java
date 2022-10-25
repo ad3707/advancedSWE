@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -51,8 +52,6 @@ public class UserControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
-   // @MockBean
-   // private UserController userController;
    @MockBean
    UserRepository userRepo;
 
@@ -72,6 +71,7 @@ public class UserControllerTest {
     }
 
 
+    //Tests if client can post a user 
    @Test
    @Transactional
    public void testPostUser() throws Exception {
@@ -97,7 +97,7 @@ public class UserControllerTest {
   }
 
 
-   //Test for the PUT API. Tests if client can update a user
+   //Tests if client can update a user
    @Test
    @Transactional //ensures that the interactions you have with the database are rolled back at the end of each test
    public void testUpdateUsers() throws Exception {
@@ -116,5 +116,17 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.correct").value("4"));
     }
 
-
+    @Test
+    @Transactional
+    public void testDeleteUser() throws Exception {
+        User userToDelete = new User(31, "User2",5,3);
+        when(userRepo.findById(any())).thenReturn(Optional.of(userToDelete));
+        
+        mvc.perform(delete("/users/{id}", 31))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").value("User2"))
+                .andExpect(jsonPath("$.attempted").value(5))
+                .andExpect(jsonPath("$.correct").value(3));
+    }
 }
