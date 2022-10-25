@@ -32,9 +32,11 @@ import javax.transaction.Transactional;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserControllerTest {
-	@Autowired
+	//Inject object dependency implicitly 
+   @Autowired
 	private MockMvc mvc;
 
+   //Used to add mock objects
    @MockBean
    UserRepository userRepo;
 
@@ -90,6 +92,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.correct").value("4"));
     }
 
+    //Tests if a client can delete a user
     @Test
     @Transactional
     public void testDeleteUser() throws Exception {

@@ -26,8 +26,9 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "/users", produces = "application/json")
-    public @ResponseBody Iterable<User> getAllUsers() {
+    //GET Mappings
+    @GetMapping(value="/users", produces="application/json")
+    public @ResponseBody Iterable<User> getAllUsers(){
         Iterable<User> users = this.userRepository.findAll();
         return users;
     }
@@ -37,13 +38,15 @@ public class UserController {
         return this.userRepository.findById(id);
     }
 
-    @PostMapping(value = "/users", produces = "application/json")
-    public @ResponseBody User createNewUser(@RequestBody User user) {
+    //POST Mappings
+    @PostMapping(value="/users", produces="application/json")
+    public @ResponseBody User createNewUser(@RequestBody User user){
         // should handle empty request body, bad request body, and good request body
         User newUser = this.userRepository.save(user);
         return newUser;
     }
 
+    //PUT Mappings
     @PutMapping(value = "/users/{id}")// produces="application/json")
     public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser) {
         Optional<User> userToUpdateOptional = this.userRepository.findById(id);
@@ -69,6 +72,7 @@ public class UserController {
         return userToUpdate;
     }
 
+    //DELETE Mappings
     @DeleteMapping("/users/{id}")
     public User deleteUser(@PathVariable("id") Integer id) {
         Optional<User> userToDeleteOptional = this.userRepository.findById(id);
