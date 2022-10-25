@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 // Need both users and questions to update & retrieve leaderboard information
 import com.example.sweProject.entities.User;
@@ -24,15 +25,19 @@ import antlr.debug.NewLineListener;
 public class UserController{
     private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
+    private Optional<User> userToUpdateOptional;
+    
 
     public UserController(final UserRepository userRepository,final QuestionRepository questionRepository) {
         this.userRepository = userRepository;
         this.questionRepository = questionRepository;
     }
 
-    @GetMapping("/users")
-    public Iterable<User> getAllUsers() {
-        return this.userRepository.findAll();
+
+    @GetMapping(value="/users", produces="application/json")
+    public @ResponseBody Iterable<User> getAllUsers(){
+        Iterable<User> users = this.userRepository.findAll();
+        return users;
     }
 
     @GetMapping("/users/{id}")
@@ -40,20 +45,23 @@ public class UserController{
         return this.userRepository.findById(id);
     }
 
-    @PostMapping("/users")
-    public User createNewUser(@RequestBody User user){
+    @PostMapping(value="/users", produces="application/json")
+    public @ResponseBody User createNewUser(@RequestBody User user){
+        // should handle empty request body, bad request body, and good request body
         User newUser = this.userRepository.save(user);
         return newUser;
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping(value = "/users/{id}")// produces="application/json")
     public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser) {
         Optional<User> userToUpdateOptional = this.userRepository.findById(id);
+        
+
         if (!userToUpdateOptional.isPresent()) {
             return null;
         }
-
         User userToUpdate = userToUpdateOptional.get();
+        
         if (updatedUser.getName() != null) {
             userToUpdate.setName(updatedUser.getName());
         }
@@ -63,6 +71,8 @@ public class UserController{
         if (updatedUser.getCorrect() != null) {
             userToUpdate.setCorrect(updatedUser.getCorrect());
         }
+
+        this.userRepository.save(userToUpdate);
 
         User outUser  = this.userRepository.save(userToUpdate);
         return outUser;
@@ -80,38 +90,38 @@ public class UserController{
     }
 
     // Update user to the score they gave (api: THIS user answered THIS question with THIS choice)
-    @PutMapping("/users/{userid}/answer") 
-    public User updateUser(@PathVariable("userid") Integer userid, @RequestBody Integer questionid, @RequestBody String choice) {
-        // See if user exists
-        Optional<User> userToUpdateOptional = this.userRepository.findById(userid);
-        if (!userToUpdateOptional.isPresent()) {
-            return null;
-        }
+    // @PutMapping("/users/{userid}/answer") 
+    // public User updateUser(@PathVariable("userid") Integer userid, @RequestBody Integer questionid, @RequestBody String choice) {
+    //     // See if user exists
+    //     Optional<User> userToUpdateOptional = this.userRepository.findById(userid);
+    //     if (!userToUpdateOptional.isPresent()) {
+    //         return null;
+    //     }
 
-        // See if question exists
-        Optional<Question> questionOptional = this.questionRepository.findById(questionid);
-        if (!questionToUpdateOptional.isPresent()) {
-            return null;
-        }
+    //     // See if question exists
+    //     Optional<Question> questionToUpdateOptional = this.questionRepository.findById(questionid);
+    //     if (!questionToUpdateOptional.isPresent()) {
+    //         return null;
+    //     }
 
-        // See if the choice is valid
-        if(choice.length() != 1 || !(choice.charAt(0) >= 'A' && choice.charAt(0) <= 'D' || choice.charAt(0) >= 'a' && choice.charAt(0) <= 'd')){
-            return null;
-        }
+    //     // See if the choice is valid
+    //     if(choice.length() != 1 || !(choice.charAt(0) >= 'A' && choice.charAt(0) <= 'D' || choice.charAt(0) >= 'a' && choice.charAt(0) <= 'd')){
+    //         return null;
+    //     }
 
-        // At this point, a valid input is guaranteed
+    //     // At this point, a valid input is guaranteed
 
-        User userToUpdate = userToUpdateOptional.get();
-        Question questionAttempted = questionOptional.get();
+    //     User userToUpdate = userToUpdateOptional.get();
+    //     Question questionAttempted = questionToUpdateOptional.get();
         
-        userToUpdate.incrementAttempted();
-        if (choice.equals(questionAttempted.getAnswer())) {
-            userToUpdate.incrementCorrect();
-        }
+    //     userToUpdate.incrementAttempted();
+    //     if (choice.equals(questionAttempted.getAnswer())) {
+    //         userToUpdate.incrementCorrect();
+    //     }
 
-        User outUser  = this.userRepository.save(userToUpdate);
-        return outUser;
-    }
+    //     User outUser  = this.userRepository.save(userToUpdate);
+    //     return outUser;
+    // }
 
     // Get top k users
     @GetMapping("/leaderboard/{k}")
