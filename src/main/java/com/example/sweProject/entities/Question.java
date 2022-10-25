@@ -5,10 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 
 @Entity
-@Table(name="QUESTIONS")
+@Table(name = "QUESTIONS")
 public class Question {
 
   // Instance Variables
@@ -17,22 +16,22 @@ public class Question {
   @GeneratedValue // id is automatically generated when new Question is created via POST
   private Integer id;
 
-  @Column(name="NAME")
+  @Column(name = "NAME")
   private String name;
 
-  @Column(name="A")
+  @Column(name = "A")
   private String a;
 
-  @Column(name="B")
+  @Column(name = "B")
   private String b;
 
-  @Column(name="C")
+  @Column(name = "C")
   private String c;
 
-  @Column(name="D")
+  @Column(name = "D")
   private String d;
 
-  @Column(name="ANSWER")
+  @Column(name = "ANSWER")
   private String answer;
 
   // Controllers
@@ -40,7 +39,7 @@ public class Question {
   public Question(){
   }
 
-  public Question(Integer id, String name, String a, String b, String c, String d, String answer){
+  public Question(Integer id, String name, String a, String b, String c, String d, String answer) {
     this.id = id;
     this.name = name;
     this.a = a;

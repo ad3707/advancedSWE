@@ -1,5 +1,3 @@
-
-
 package com.example.sweProject.controllers;
 
 import java.util.*;
@@ -18,29 +16,29 @@ import com.example.sweProject.repositories.UserRepository;
 import com.example.sweProject.repositories.QuestionRepository;
 
 @RestController
-public class UserController{
+public class UserController {
     private final UserRepository userRepository;
     private final QuestionRepository questionRepository;    
 
-    public UserController(final UserRepository userRepository,final QuestionRepository questionRepository) {
+    public UserController(final UserRepository userRepository, final QuestionRepository questionRepository) {
         this.userRepository = userRepository;
         this.questionRepository = questionRepository;
     }
 
 
-    @GetMapping(value="/users", produces="application/json")
-    public @ResponseBody Iterable<User> getAllUsers(){
+    @GetMapping(value = "/users", produces = "application/json")
+    public @ResponseBody Iterable<User> getAllUsers() {
         Iterable<User> users = this.userRepository.findAll();
         return users;
     }
 
     @GetMapping("/users/{id}")
-    public Optional<User> getUserById(@PathVariable("id") Integer id){
+    public Optional<User> getUserById(@PathVariable("id") Integer id) {
         return this.userRepository.findById(id);
     }
 
-    @PostMapping(value="/users", produces="application/json")
-    public @ResponseBody User createNewUser(@RequestBody User user){
+    @PostMapping(value = "/users", produces = "application/json")
+    public @ResponseBody User createNewUser(@RequestBody User user) {
         // should handle empty request body, bad request body, and good request body
         User newUser = this.userRepository.save(user);
         return newUser;
@@ -49,14 +47,13 @@ public class UserController{
     @PutMapping(value = "/users/{id}")// produces="application/json")
     public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser) {
         Optional<User> userToUpdateOptional = this.userRepository.findById(id);
-        
 
         if (!userToUpdateOptional.isPresent()) {
             return null;
         }
 
         User userToUpdate = userToUpdateOptional.get();
-        
+
         if (updatedUser.getName() != null) {
             userToUpdate.setName(updatedUser.getName());
         }
@@ -120,20 +117,27 @@ public class UserController{
     // Get top k users
     @GetMapping("/leaderboard/{k}")
     public List<User> getTopKUsers(@PathVariable("k") Integer k) {
-        if(k == null) return null;
+
+        if (k == null) {
+            return null;
+        }
 
 	    PriorityQueue<User> pq = new PriorityQueue<>((a,b) -> Double.compare(a.getPercentCorrect(),b.getPercentCorrect()));
 	
-        for(User user: this.getAllUsers()){
+        for (User user: this.getAllUsers()) {
             pq.add(user);
             
             // Remove bottom tier users if size is greater than k
-            if(pq.size() > k) pq.poll();
+            if (pq.size() > k) {
+                pq.poll();
+            };
         }
 
         // Convert to LinkedList
         List<User> out = new LinkedList<>();
-        while(!pq.isEmpty()) out.add(0,pq.poll());
+        while (!pq.isEmpty()) {
+            out.add(0, pq.poll())
+        };
         
         return out;
     }

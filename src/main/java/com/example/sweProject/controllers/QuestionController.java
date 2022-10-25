@@ -15,7 +15,7 @@ import com.example.sweProject.entities.Question;
 import com.example.sweProject.repositories.QuestionRepository;
 
 @RestController
-public class QuestionController{
+public class QuestionController {
     private final QuestionRepository questionRepository;
 
     public QuestionController(final QuestionRepository questionRepository) {
@@ -23,21 +23,21 @@ public class QuestionController{
     }
 
     // GET Mappings
-    @GetMapping(value="/questions", produces="application/json")
-    public @ResponseBody Iterable<Question> getAllQuestions(){
+    @GetMapping(value = "/questions", produces = "application/json")
+    public @ResponseBody Iterable<Question> getAllQuestions() {
         Iterable<Question> questions = this.questionRepository.findAll();
         return questions;
     }
 
     @GetMapping("/questions/{id}")
-    public Optional<Question> getQuestionById(@PathVariable("id") Integer id){
+    public Optional<Question> getQuestionById(@PathVariable("id") Integer id) {
         return this.questionRepository.findById(id);
     }
 
     // POST Mappings
 
-    @PostMapping(value="/questions", produces="application/json")
-    public @ResponseBody Question createNewQuestion(@RequestBody Question question){
+    @PostMapping(value = "/questions", produces = "application/json")
+    public @ResponseBody Question createNewQuestion(@RequestBody Question question) {
 
         // should handle empty request body, bad request body, and good request body
         Question newQuestion = this.questionRepository.save(question);
@@ -93,7 +93,7 @@ public class QuestionController{
 
         // check if question with {id} exists in database
         Optional<Question> questionToDeleteOptional = this.questionRepository.findById(id);
-        
+
         // if {id} does not exist in database, return null
         if (!questionToDeleteOptional.isPresent()) {
             return null;
