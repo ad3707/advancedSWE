@@ -47,7 +47,7 @@ public class QuestionControllerTest {
         allQuestions.add(q);
         allQuestions.add(q);
 
-        when(questionRepo.findAll()).thenReturn(allQuestions);
+        when(questionRepo.findByClientId(any())).thenReturn(allQuestions);
 
         mvc.perform(get("/questions")
                 .accept("application/json"))
@@ -88,7 +88,7 @@ public class QuestionControllerTest {
         Question originalQuestion = new Question(31, "What is 1+1?","1","2","3","4","b");
         Question newQuestion = new Question(31, "What is 1+2?",null,null,null,null,"c");
         
-        when(questionRepo.findById(any())).thenReturn(Optional.of(originalQuestion));
+        when(questionRepo.findBySpecificQuestion(any(), any())).thenReturn(Optional.of(originalQuestion));
     
         mvc.perform(put("/questions/{id}", 31)
                 .content(asJsonString(newQuestion))
@@ -109,7 +109,7 @@ public class QuestionControllerTest {
     @Transactional
     public void testDeleteQuestion() throws Exception {
         Question questionToDelete = new Question(31, "What is 1+1?","1","2","3","4","b");
-        when(questionRepo.findById(any())).thenReturn(Optional.of(questionToDelete));
+        when(questionRepo.findBySpecificQuestion(any(), any())).thenReturn(Optional.of(questionToDelete));
 
         mvc.perform(delete("/questions/{id}", 31))
                 .andExpect(status().isOk())

@@ -51,9 +51,10 @@ public class QuestionController {
 
     // PUT Mappings
     @PutMapping("/questions/{id}")
-    public Question updateQuestion(@PathVariable("id") Integer id, @RequestBody Question p) {
+    public Question updateQuestion(@PathVariable("id") Integer id, @RequestBody Question p, HttpServletRequest request) {
         // check if question with {id} exists in database
-        Optional<Question> questionToUpdateOptional = this.questionRepository.findById(id);
+        String ipAddr = request.getRemoteAddr();
+        Optional<Question> questionToUpdateOptional = this.questionRepository.findBySpecificQuestion(ipAddr, id);
 
         // if question with {id} does not exist in database, return null
         if (!questionToUpdateOptional.isPresent()) {
@@ -91,10 +92,10 @@ public class QuestionController {
 
     // DELETE Mappings
     @DeleteMapping("/questions/{id}")
-    public Question deleteQuestion(@PathVariable("id") Integer id) {
-
+    public Question deleteQuestion(@PathVariable("id") Integer id, HttpServletRequest request) {
         // check if question with {id} exists in database
-        Optional<Question> questionToDeleteOptional = this.questionRepository.findById(id);
+        String ipAddr = request.getRemoteAddr();
+        Optional<Question> questionToDeleteOptional = this.questionRepository.findBySpecificQuestion(ipAddr, id);
 
         // if {id} does not exist in database, return null
         if (!questionToDeleteOptional.isPresent()) {
