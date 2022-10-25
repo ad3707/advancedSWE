@@ -5,13 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 
 @Entity
-@Table(name = "QUESTIONS")
+@Table(name = "USERS")
 public class User {
     @Id
-    // @Column(name="ID")
+    @Column(name="ID")
     @GeneratedValue
     private Integer id;
 
@@ -69,11 +68,6 @@ public class User {
     }
 
     public User() {
-    }
-
-    public User(Integer id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public User(Integer id, String name, Integer attempted, Integer correct) {

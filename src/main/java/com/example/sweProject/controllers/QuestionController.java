@@ -23,7 +23,6 @@ public class QuestionController{
     }
 
     // GET Mappings
-
     @GetMapping(value="/questions", produces="application/json")
     public @ResponseBody Iterable<Question> getAllQuestions(){
         Iterable<Question> questions = this.questionRepository.findAll();

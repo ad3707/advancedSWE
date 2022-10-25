@@ -13,20 +13,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-// Need both users and questions to update & retrieve leaderboard information
 import com.example.sweProject.entities.User;
-import com.example.sweProject.entities.Question;
 import com.example.sweProject.repositories.UserRepository;
 import com.example.sweProject.repositories.QuestionRepository;
-
-import antlr.debug.NewLineListener;
 
 @RestController
 public class UserController{
     private final UserRepository userRepository;
-    private final QuestionRepository questionRepository;
-    private Optional<User> userToUpdateOptional;
-    
+    private final QuestionRepository questionRepository;    
 
     public UserController(final UserRepository userRepository,final QuestionRepository questionRepository) {
         this.userRepository = userRepository;
@@ -90,38 +84,38 @@ public class UserController{
     }
 
     // Update user to the score they gave (api: THIS user answered THIS question with THIS choice)
-    @PutMapping("/users/{userid}/answer") 
-    public User updateUser(@PathVariable("userid") Integer userid, @RequestBody Integer questionid, @RequestBody String choice) {
-        // See if user exists
-        Optional<User> userToUpdateOptional = this.userRepository.findById(userid);
-        if (!userToUpdateOptional.isPresent()) {
-            return null;
-        }
+    // @PutMapping("/users/{userid}/answer/{questionid}") 
+    // public User updateUserLeaderboard(@PathVariable("userid") Integer userid, @PathVariable Integer questionid, @RequestBody String choice) {
+    //     // See if user exists
+    //     Optional<User> userToUpdateOptional = this.userRepository.findById(userid);
+    //     if (!userToUpdateOptional.isPresent()) {
+    //         return null;
+    //     }
 
-        // See if question exists
-        Optional<Question> questionToUpdateOptional = this.questionRepository.findById(questionid);
-        if (!questionToUpdateOptional.isPresent()) {
-            return null;
-        }
+    //     // See if question exists
+    //     Optional<Question> questionToUpdateOptional = this.questionRepository.findById(questionid);
+    //     if (!questionToUpdateOptional.isPresent()) {
+    //         return null;
+    //     }
 
-        // See if the choice is valid
-        if(choice.length() != 1 || !(choice.charAt(0) >= 'A' && choice.charAt(0) <= 'D' || choice.charAt(0) >= 'a' && choice.charAt(0) <= 'd')){
-            return null;
-        }
+    //     // See if the choice is valid
+    //     if(choice.length() != 1 || !(choice.charAt(0) >= 'A' && choice.charAt(0) <= 'D' || choice.charAt(0) >= 'a' && choice.charAt(0) <= 'd')){
+    //         return null;
+    //     }
 
-        // At this point, a valid input is guaranteed
+    //     // At this point, a valid input is guaranteed
 
-        User userToUpdate = userToUpdateOptional.get();
-        Question questionAttempted = questionToUpdateOptional.get();
+    //     User userToUpdate = userToUpdateOptional.get();
+    //     Question questionAttempted = questionToUpdateOptional.get();
         
-        userToUpdate.incrementAttempted();
-        if (choice.equals(questionAttempted.getAnswer())) {
-            userToUpdate.incrementCorrect();
-        }
+    //     userToUpdate.incrementAttempted();
+    //     if (choice.equals(questionAttempted.getAnswer())) {
+    //         userToUpdate.incrementCorrect();
+    //     }
 
-        User outUser  = this.userRepository.save(userToUpdate);
-        return outUser;
-    }
+    //     User outUser  = this.userRepository.save(userToUpdate);
+    //     return outUser;
+    // }
 
     // Get top k users
     @GetMapping("/leaderboard/{k}")
