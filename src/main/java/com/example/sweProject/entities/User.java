@@ -23,6 +23,9 @@ public class User {
     @Column(name = "CORRECT")
     private Integer correct;
 
+    @Column(name = "CLIENT_ID")
+    private String clientId;
+
     public Integer getId() {
         return this.id;
     }
@@ -43,6 +46,10 @@ public class User {
         return ((double) this.getCorrect()) / ((double) this.getAttempted());
     }
 
+    public String getClientId() {
+        return this.clientId;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -57,6 +64,10 @@ public class User {
 
     public void setCorrect(Integer correct) {
         this.correct = correct;
+    }
+
+    public String setClientId(String clientId) {
+        return this.clientId = clientId;
     }
 
     public void incrementAttempted() {
