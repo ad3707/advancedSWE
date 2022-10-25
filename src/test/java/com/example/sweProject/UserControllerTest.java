@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import com.example.sweProject.controllers.UserController;
 import com.example.sweProject.entities.User;
+import com.example.sweProject.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,11 +16,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.Mockito.when;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,129 +53,80 @@ public class UserControllerTest {
 	private MockMvc mvc;
 
    @MockBean
-   private UserController userController;
+   UserRepository userRepo;
 
-    //Test to see that a client receives all the questions in the database
+    //Test to see that a client receives all the users
     @Test
     public void getUsers() throws Exception {
-    //     List allUsers = singletonList(new User(null, "SomeUser"));
-
-    //     given(userController.getAllUsers()).willReturn(allUsers);
-
-    //     mvc.perform(get("/users")
-    //             .accept("application/json"))
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$[0].name", is("SomeUser")))
-    //             .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
-    // }
-
         User u = new User(3,"User1",5,2);
-        List<Question> allQuestions = new ArrayList<Question>();
-        allQuestions.add(q);
-        allQuestions.add(q);
-        allQuestions.add(q);
-        allQuestions.add(q);
-        allQuestions.add(q);
-
-        when(questionRepo.findAll()).thenReturn(allQuestions);
-
-        mvc.perform(get("/questions")
+        List<User> allUsers = new ArrayList<User>();
+        allUsers.add(u);
+        when(userRepo.findAll()).thenReturn(allUsers);
+        mvc.perform(get("/users")
                 .accept("application/json"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("What is 1+1?"))
-                .andExpect(jsonPath("$[0].a", is("1")))
-                .andExpect(jsonPath("$[0].b", is("2")))
-                .andExpect(jsonPath("$[0].c", is("3")))
-                .andExpect(jsonPath("$[0].d", is("4")))
-                .andExpect(jsonPath("$[0].answer", is("A")));
-    
+                .andExpect(jsonPath("$[0].name").value("User1"))
+                .andExpect(jsonPath("$[0].attempted", is(5)))
+                .andExpect(jsonPath("$[0].correct", is(2)));
     }
 
 
+    //Tests if client can post a user 
+   @Test
+   @Transactional
+   public void testPostUser() throws Exception {
+      User user = new User(2,"User2",6,2);
+      when(userRepo.save(any())).thenReturn(user);
+      mvc.perform(post("/users")
+               .content(asJsonString(user))
+               .contentType("application/json")
+               .accept("application/json"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").exists())
+               .andExpect(jsonPath("$.name").value("User2"))
+               .andExpect(jsonPath("$.attempted").value(6))
+               .andExpect(jsonPath("$.correct").value(2));
+      }
+
+   public static String asJsonString(final Object question) {
+      try {
+          return new ObjectMapper().writeValueAsString(question);
+      } catch (Exception e) {
+          throw new RuntimeException(e);
+      }
+  }
 
 
-
-
+   //Tests if client can update a user
+   @Test
+   @Transactional //ensures that the interactions you have with the database are rolled back at the end of each test
+   public void testUpdateUsers() throws Exception {
+        User originalUser = new User(31, "User31",5,3);
+        User newUser= new User(31, null,6,4);
+        when(userRepo.findById(any())).thenReturn(Optional.of(originalUser));
     
+        mvc.perform(put("/users/{id}", 31)
+                .content(asJsonString(newUser))
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").value("User31"))
+                .andExpect(jsonPath("$.attempted").value("6"))
+                .andExpect(jsonPath("$.correct").value("4"));
+    }
 
-   //Test for the POST json request. Tests if a user can add a question
-//    @Test
-//    public void testPostUser() throws Exception {
-//     User user = new User(1,"User1");
-//     given(userController.createNewUser(user)).willReturn(user);
-//     given(userController.getAllUsers()).willReturn(singletonList(user));
-
-//     mvc.perform( MockMvcRequestBuilders
-//         .post("/users")
-//         .content(asJsonString(user))
-//         .contentType(MediaType.APPLICATION_JSON)
-//         .accept(MediaType.APPLICATION_JSON))
-//         .andExpect(status().isOk());
-
-//     mvc.perform(get("/users")
-//         .accept("application/json"))
-//         .andExpect(status().isOk())
-//         .andExpect(jsonPath("$[0].name", is("User1")))
-//         .andExpect(jsonPath("$[0].id", is(1)));
-//    }
-
-   
-   // act, arrange, assert
-
-//    @Test
-//    public void createUserAPI() throws Exception {      
-//       User user = new User(20,"NewUser");
-
-//       given(userController.createNewUser(user)).willReturn(user);
-
-//       mvc.perform( MockMvcRequestBuilders
-//                .post("/users")
-//                .content(asJsonString(user))
-//                .contentType("application/json"))
-//                .andExpect(status().isOk());
-//                //.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
-//    }
-
-    // //Test for the DELETE API. Tests if a client can delete a quesiton.
-    // @Test
-    // public void deleteUserAPI() throws Exception {
+    @Test
+    @Transactional
+    public void testDeleteUser() throws Exception {
+        User userToDelete = new User(31, "User2",5,3);
+        when(userRepo.findById(any())).thenReturn(Optional.of(userToDelete));
         
-    //    User user = new User(20,"NewUser");
-    //    mvc.perform( MockMvcRequestBuilders.delete("/users/{id}",20))
-    //                .andExpect(status().isAccepted());
-    //    }
-
-
-//    public static String asJsonString(final Object question) {
-//       try {
-//           return new ObjectMapper().writeValueAsString(question);
-//       } catch (Exception e) {
-//           throw new RuntimeException(e);
-//       }
-//   }
-
-
-//   //Test for the PUT API. Tests if client can update a question
-//   @Test
-//   @Transactional //ensures that the interactions you have with the database are rolled back at the end of each test
-//   public void updateUserAPI() throws Exception {
-
-//     User user = new User(20,"NewUser");
-
-//     JSONObject newUser = new JSONObject();    
-//     newUser.put("name", "User2");
-//     newUser.put("attempted", 5);   
-//     newUser.put("correct", 7);   
-
-//     mvc.perform(put("/users/{id}",20)
-//                .content(newUser.toJSONString())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                //.andExpect(jsonPath("$[0].name", is("User2")))
-//                .andExpect(jsonPath("$[0].name").value("User2"))
-//                .andExpect(jsonPath("$[0].attempted").value(5))
-//                .andExpect(jsonPath("$[0].correct").value(7));
-//   }
-
+        mvc.perform(delete("/users/{id}", 31))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").value("User2"))
+                .andExpect(jsonPath("$.attempted").value(5))
+                .andExpect(jsonPath("$.correct").value(3));
+    }
 }

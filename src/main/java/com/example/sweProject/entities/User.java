@@ -8,20 +8,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 @Entity
-@Table(name="QUESTIONS")
+@Table(name = "QUESTIONS")
 public class User {
     @Id
     // @Column(name="ID")
     @GeneratedValue
     private Integer id;
 
-    @Column(name="NAME")
+    @Column(name = "NAME")
     private String name;
 
-    @Column(name="ATTEMPTED")
+    @Column(name = "ATTEMPTED")
     private Integer attempted;
 
-    @Column(name="CORRECT")
+    @Column(name = "CORRECT")
     private Integer correct;
 
     public Integer getId() {
@@ -60,22 +60,26 @@ public class User {
         this.correct = correct;
     }
 
-    public void incrementAttempted(){
+    public void incrementAttempted() {
         this.attempted++;
     }
 
-    public void incrementCorrect(){
+    public void incrementCorrect() {
         this.correct++;
     }
 
-    public User(){
-  }
+    public User() {
+    }
 
-  public User(Integer id, String name, Integer attempted, Integer correct){
-    this.id = id;
-    this.name = name;
-    this.attempted = attempted;
-    this.correct = correct;
-  }
+    public User(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public User(Integer id, String name, Integer attempted, Integer correct) {
+        this.id = id;
+        this.name = name;
+        this.attempted = attempted;
+        this.correct = correct;
+    }
 }
-
