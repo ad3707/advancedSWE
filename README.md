@@ -6,6 +6,10 @@ Write a README.md that describes in simple terms how to build, run and test your
 
 The README.md should also describe all the operational entry points to your server or link to some external documentation, e.g., SwaggerLinks to an external site..  As noted above, this might be a subset of your proposed API.  This is your "API documentation".  If certain entry points must be called in certain orders or never called in certain orders, make sure to say so.
 
+**Checkstyle Reports**:
+
+We are using Checkstyle's sun_checks ruleset. Although our code is not fully compliant with the rules it defines as of right now, you can see present errors by going into the folder styleReports --> site --> checkstyle.html.
+
 If any third-party code is included in your codebase, also document exactly which code this is, where it resides in your repository, and where you got it from (e.g., download url). 
 ------------------------------------------------------------------------------------------------------
 
