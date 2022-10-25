@@ -75,11 +75,14 @@ public class LeaderboardTest {
 
     // }
 
+    //Tests to see if the client receives the correct top k users
     @Test
     public void getTopKUsers() throws Exception {
+        //Creates 3 users which different score percents
         User u1 = new User(1,"U1",10,5);
         User u2 = new User(1,"U2",20,5);
         User u3 = new User(1,"U3",5,5);
+
 
         userRepo.save(u1);
         userRepo.save(u2);
@@ -92,6 +95,7 @@ public class LeaderboardTest {
         given(userController.getTopKUsers(2)).willReturn(topKUsersList);
 
         List<User> actualResults = userController.getTopKUsers(2);
+        //Checks if it returns correctly
         assertEquals(u3.getName(), actualResults.get(0).getName());
         assertEquals(u1.getName(), actualResults.get(1).getName());
     }
