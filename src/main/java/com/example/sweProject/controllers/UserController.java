@@ -2,6 +2,8 @@ package com.example.sweProject.controllers;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,22 +27,23 @@ public class UserController {
         this.questionRepository = questionRepository;
     }
 
-
     //GET Mappings
     @GetMapping(value="/users", produces="application/json")
-    public @ResponseBody Iterable<User> getAllUsers(){
-        Iterable<User> users = this.userRepository.findAll();
+    public @ResponseBody Iterable<User> getAllUsers(HttpServletRequest request){
+        String ipAddr = request.getRemoteAddr();
+        Iterable<User> users = this.userRepository.findByClientId(ipAddr);
         return users;
     }
 
     @GetMapping("/users/{id}")
-    public Optional<User> getUserById(@PathVariable("id") Integer id) {
-        return this.userRepository.findById(id);
+    public Optional<User> getUserById(@PathVariable("id") Integer id, HttpServletRequest request) {
+        String ipAddr = request.getRemoteAddr();
+        return this.userRepository.findBySpecificUser(ipAddr, id);
     }
 
     //POST Mappings
     @PostMapping(value="/users", produces="application/json")
-    public @ResponseBody User createNewUser(@RequestBody User user){
+    public @ResponseBody User createNewUser(@RequestBody User user, HttpServletRequest request){
         // should handle empty request body, bad request body, and good request body
         User newUser = this.userRepository.save(user);
         return newUser;
@@ -48,8 +51,9 @@ public class UserController {
 
     //PUT Mappings
     @PutMapping(value = "/users/{id}")// produces="application/json")
-    public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser) {
-        Optional<User> userToUpdateOptional = this.userRepository.findById(id);
+    public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser, HttpServletRequest request) {
+        String ipAddr = request.getRemoteAddr();
+        Optional<User> userToUpdateOptional = this.userRepository.findBySpecificUser(ipAddr, id);
 
         if (!userToUpdateOptional.isPresent()) {
             return null;
@@ -74,8 +78,9 @@ public class UserController {
 
     //DELETE Mappings
     @DeleteMapping("/users/{id}")
-    public User deleteUser(@PathVariable("id") Integer id) {
-        Optional<User> userToDeleteOptional = this.userRepository.findById(id);
+    public User deleteUser(@PathVariable("id") Integer id, HttpServletRequest request) {
+        String ipAddr = request.getRemoteAddr();
+        Optional<User> userToDeleteOptional = this.userRepository.findBySpecificUser(ipAddr, id);
         if (!userToDeleteOptional.isPresent()) {
             return null;
         }
@@ -141,7 +146,7 @@ public class UserController {
         List<User> out = new LinkedList<>();
         while (!pq.isEmpty()) {
             out.add(0, pq.poll())
-        };
+        }
         
         return out;
     }

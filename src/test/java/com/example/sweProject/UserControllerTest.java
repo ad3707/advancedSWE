@@ -46,7 +46,7 @@ public class UserControllerTest {
         User u = new User(3,"User1",5,2);
         List<User> allUsers = new ArrayList<User>();
         allUsers.add(u);
-        when(userRepo.findAll()).thenReturn(allUsers);
+        when(userRepo.findByClientId(any())).thenReturn(allUsers);
         mvc.perform(get("/users")
                 .accept("application/json"))
                 .andExpect(status().isOk())
@@ -79,7 +79,7 @@ public class UserControllerTest {
    public void testUpdateUsers() throws Exception {
         User originalUser = new User(31, "User31",5,3);
         User newUser= new User(31, null,6,4);
-        when(userRepo.findById(any())).thenReturn(Optional.of(originalUser));
+        when(userRepo.findBySpecificUser(any(), any())).thenReturn(Optional.of(originalUser));
     
         mvc.perform(put("/users/{id}", 31)
                 .content(asJsonString(newUser))
@@ -97,7 +97,7 @@ public class UserControllerTest {
     @Transactional
     public void testDeleteUser() throws Exception {
         User userToDelete = new User(31, "User2",5,3);
-        when(userRepo.findById(any())).thenReturn(Optional.of(userToDelete));
+        when(userRepo.findBySpecificUser(any(), any())).thenReturn(Optional.of(userToDelete));
         
         mvc.perform(delete("/users/{id}", 31))
                 .andExpect(status().isOk())
