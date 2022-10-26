@@ -2,7 +2,7 @@ package com.example.sweProject.controllers;
 
 import java.util.*;
 
-import javax.servlet.http.HttpServletRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,46 +14,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.sweProject.entities.User;
+import com.example.sweProject.entities.Question;
 import com.example.sweProject.repositories.UserRepository;
 import com.example.sweProject.repositories.QuestionRepository;
 
 @RestController
 public class UserController {
     private final UserRepository userRepository;
-    private final QuestionRepository questionRepository;    
+    private final QuestionRepository questionRepository;
 
     public UserController(final UserRepository userRepository, final QuestionRepository questionRepository) {
         this.userRepository = userRepository;
         this.questionRepository = questionRepository;
     }
 
-    //GET Mappings
-    @GetMapping(value="/users", produces="application/json")
-    public @ResponseBody Iterable<User> getAllUsers(HttpServletRequest request){
-        String ipAddr = request.getRemoteAddr();
-        Iterable<User> users = this.userRepository.findByClientId(ipAddr);
+    // GET Mappings
+    @GetMapping(value = "/users", produces = "application/json")
+    public @ResponseBody Iterable<User> getAllUsers() {
+        Iterable<User> users = this.userRepository.findAll();
         return users;
     }
 
     @GetMapping("/users/{id}")
-    public Optional<User> getUserById(@PathVariable("id") Integer id, HttpServletRequest request) {
-        String ipAddr = request.getRemoteAddr();
-        return this.userRepository.findBySpecificUser(ipAddr, id);
+    public Optional<User> getUserById(@PathVariable("id") Integer id) {
+        return this.userRepository.findById(id);
     }
 
-    //POST Mappings
-    @PostMapping(value="/users", produces="application/json")
-    public @ResponseBody User createNewUser(@RequestBody User user, HttpServletRequest request){
+    // POST Mappings
+    @PostMapping(value = "/users", produces = "application/json")
+    public @ResponseBody User createNewUser(@RequestBody User user) {
         // should handle empty request body, bad request body, and good request body
         User newUser = this.userRepository.save(user);
         return newUser;
     }
 
-    //PUT Mappings
-    @PutMapping(value = "/users/{id}")// produces="application/json")
-    public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser, HttpServletRequest request) {
-        String ipAddr = request.getRemoteAddr();
-        Optional<User> userToUpdateOptional = this.userRepository.findBySpecificUser(ipAddr, id);
+    // PUT Mappings
+    @PutMapping(value = "/users/{id}") // produces="application/json")
+    public User updateUser(@PathVariable("id") Integer id, @RequestBody User updatedUser) {
+        Optional<User> userToUpdateOptional = this.userRepository.findById(id);
 
         if (!userToUpdateOptional.isPresent()) {
             return null;
@@ -64,10 +62,10 @@ public class UserController {
         if (updatedUser.getName() != null) {
             userToUpdate.setName(updatedUser.getName());
         }
-        if (updatedUser.getAttempted() != null) {
+        if (updatedUser.getAttempted() != -1) {
             userToUpdate.setAttempted(updatedUser.getAttempted());
         }
-        if (updatedUser.getCorrect() != null) {
+        if (updatedUser.getCorrect() != -1) {
             userToUpdate.setCorrect(updatedUser.getCorrect());
         }
 
@@ -76,11 +74,10 @@ public class UserController {
         return userToUpdate;
     }
 
-    //DELETE Mappings
+    // DELETE Mappings
     @DeleteMapping("/users/{id}")
-    public User deleteUser(@PathVariable("id") Integer id, HttpServletRequest request) {
-        String ipAddr = request.getRemoteAddr();
-        Optional<User> userToDeleteOptional = this.userRepository.findBySpecificUser(ipAddr, id);
+    public User deleteUser(@PathVariable("id") Integer id) {
+        Optional<User> userToDeleteOptional = this.userRepository.findById(id);
         if (!userToDeleteOptional.isPresent()) {
             return null;
         }
@@ -89,39 +86,44 @@ public class UserController {
         return userToDelete;
     }
 
-    // Update user to the score they gave (api: THIS user answered THIS question with THIS choice)
-    // @PutMapping("/users/{userid}/answer/{questionid}") 
-    // public User updateUserLeaderboard(@PathVariable("userid") Integer userid, @PathVariable Integer questionid, @RequestBody String choice) {
-    //     // See if user exists
-    //     Optional<User> userToUpdateOptional = this.userRepository.findById(userid);
-    //     if (!userToUpdateOptional.isPresent()) {
-    //         return null;
-    //     }
+    // Update user to the score they gave (api: THIS user answered THIS question
+    // with THIS choice)
+    @PutMapping("/users/{userid}/answer/{questionid}")
+    public User updateUserLeaderboard(@PathVariable("userid") Integer userid, @PathVariable Integer questionid,
+            @RequestBody String choice) {
+        // See if user exists
+        Optional<User> userToUpdateOptional = this.userRepository.findById(userid);
+        if (!userToUpdateOptional.isPresent()) {
+            System.out.println("user doesnt exist");
+            return null;
+        }
 
-    //     // See if question exists
-    //     Optional<Question> questionToUpdateOptional = this.questionRepository.findById(questionid);
-    //     if (!questionToUpdateOptional.isPresent()) {
-    //         return null;
-    //     }
+        // See if question exists
+        Optional<Question> questionToUpdateOptional = this.questionRepository.findById(questionid);
+        if (!questionToUpdateOptional.isPresent()) {
+            System.out.println("question doesnt exist");
+            return null;
+        }
 
-    //     // See if the choice is valid
-    //     if(choice.length() != 1 || !(choice.charAt(0) >= 'A' && choice.charAt(0) <= 'D' || choice.charAt(0) >= 'a' && choice.charAt(0) <= 'd')){
-    //         return null;
-    //     }
+        // See if the choice is valid
+        if (choice.length() != 1 || !(choice.charAt(0) >= 'A' && choice.charAt(0) <= 'D'
+                || choice.charAt(0) >= 'a' && choice.charAt(0) <= 'd')) {
+            return null;
+        }
 
-    //     // At this point, a valid input is guaranteed
+        // At this point, a valid input is guaranteed
 
-    //     User userToUpdate = userToUpdateOptional.get();
-    //     Question questionAttempted = questionToUpdateOptional.get();
-        
-    //     userToUpdate.incrementAttempted();
-    //     if (choice.equals(questionAttempted.getAnswer())) {
-    //         userToUpdate.incrementCorrect();
-    //     }
+        User userToUpdate = userToUpdateOptional.get();
+        Question questionAttempted = questionToUpdateOptional.get();
 
-    //     User outUser  = this.userRepository.save(userToUpdate);
-    //     return outUser;
-    // }
+        userToUpdate.incrementAttempted();
+        if (choice.toLowerCase().equals(questionAttempted.getAnswer().toLowerCase())) {
+            userToUpdate.incrementCorrect();
+        }
+
+        User outUser = this.userRepository.save(userToUpdate);
+        return outUser;
+    }
 
     // Get top k users
     @GetMapping("/leaderboard/{k}")
@@ -131,29 +133,26 @@ public class UserController {
             return null;
         }
 
-	    PriorityQueue<User> pq = new PriorityQueue<>((a,b) -> Double.compare(a.getPercentCorrect(),b.getPercentCorrect()));
-	
-        for (User user: this.getAllUsers()) {
+        PriorityQueue<User> pq = new PriorityQueue<>(
+                (a, b) -> Double.compare(a.getPercentCorrect(), b.getPercentCorrect()));
+
+        for (User user : this.getAllUsers()) {
             pq.add(user);
-            
+
             // Remove bottom tier users if size is greater than k
             if (pq.size() > k) {
                 pq.poll();
-            };
+            }
+
         }
 
         // Convert to LinkedList
         List<User> out = new LinkedList<>();
         while (!pq.isEmpty()) {
-            out.add(0, pq.poll())
+            out.add(0, pq.poll());
         }
-        
+        ;
+
         return out;
     }
 }
-
-
-
-
-
-

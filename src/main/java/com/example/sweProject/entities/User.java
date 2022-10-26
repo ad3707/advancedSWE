@@ -18,10 +18,10 @@ public class User {
     private String name;
 
     @Column(name = "ATTEMPTED")
-    private Integer attempted;
+    private int attempted;
 
     @Column(name = "CORRECT")
-    private Integer correct;
+    private int correct;
 
     @Column(name = "CLIENT_ID")
     private String clientId;
@@ -34,11 +34,11 @@ public class User {
         return this.name;
     }
 
-    public Integer getAttempted() {
+    public int getAttempted() {
         return this.attempted;
     }
 
-    public Integer getCorrect() {
+    public int getCorrect() {
         return this.correct;
     }
 
@@ -58,11 +58,11 @@ public class User {
         this.name = name;
     }
 
-    public void setAttempted(Integer attempted) {
+    public void setAttempted(int attempted) {
         this.attempted = attempted;
     }
 
-    public void setCorrect(Integer correct) {
+    public void setCorrect(int correct) {
         this.correct = correct;
     }
 
@@ -79,9 +79,18 @@ public class User {
     }
 
     public User() {
+        this.attempted = 0;
+        this.correct = 0;
     }
 
-    public User(Integer id, String name, Integer attempted, Integer correct) {
+    public User(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+        this.attempted = 0;
+        this.correct = 0;
+    }
+
+    public User(Integer id, String name, int attempted, int correct) {
         this.id = id;
         this.name = name;
         this.attempted = attempted;
