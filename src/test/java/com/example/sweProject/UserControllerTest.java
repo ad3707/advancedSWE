@@ -32,21 +32,22 @@ import javax.transaction.Transactional;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserControllerTest {
-	//Inject object dependency implicitly 
-   @Autowired
-	private MockMvc mvc;
+    // Inject object dependency implicitly
+    @Autowired
+    private MockMvc mvc;
 
-   //Used to add mock objects
-   @MockBean
-   UserRepository userRepo;
+    // Used to add mock objects
+    @MockBean
+    UserRepository userRepo;
 
-    //Test to see that a client receives all the users
+    // Test to see that a client receives all the users
     @Test
     public void getUsers() throws Exception {
-        User u = new User(3,"User1",5,2);
+        User u = new User(3, "User1", 5, 2);
         List<User> allUsers = new ArrayList<User>();
         allUsers.add(u);
         when(userRepo.findByClientId(any())).thenReturn(allUsers);
+
         mvc.perform(get("/users")
                 .accept("application/json"))
                 .andExpect(status().isOk())
@@ -55,32 +56,32 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].correct", is(2)));
     }
 
+    // Tests if client can post a user
+    @Test
+    @Transactional
+    public void testPostUser() throws Exception {
+        User user = new User(2, "User2", 6, 2);
+        when(userRepo.save(any())).thenReturn(user);
+        mvc.perform(post("/users")
+                .content(asJsonString(user))
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").value("User2"))
+                .andExpect(jsonPath("$.attempted").value(6))
+                .andExpect(jsonPath("$.correct").value(2));
+    }
 
-    //Tests if client can post a user 
-   @Test
-   @Transactional
-   public void testPostUser() throws Exception {
-      User user = new User(2,"User2",6,2);
-      when(userRepo.save(any())).thenReturn(user);
-      mvc.perform(post("/users")
-               .content(asJsonString(user))
-               .contentType("application/json")
-               .accept("application/json"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.id").exists())
-               .andExpect(jsonPath("$.name").value("User2"))
-               .andExpect(jsonPath("$.attempted").value(6))
-               .andExpect(jsonPath("$.correct").value(2));
-      }
-
-   //Tests if client can update a user
-   @Test
-   @Transactional //ensures that the interactions you have with the database are rolled back at the end of each test
-   public void testUpdateUsers() throws Exception {
-        User originalUser = new User(31, "User31",5,3);
-        User newUser= new User(31, null,6,4);
+    // Tests if client can update a user
+    @Test
+    @Transactional // ensures that the interactions you have with the database are rolled back at
+                   // the end of each test
+    public void testUpdateUsers() throws Exception {
+        User originalUser = new User(31, "User31", 5, 3);
+        User newUser = new User(31, null, 6, 4);
         when(userRepo.findBySpecificUser(any(), any())).thenReturn(Optional.of(originalUser));
-    
+
         mvc.perform(put("/users/{id}", 31)
                 .content(asJsonString(newUser))
                 .contentType("application/json")
@@ -92,13 +93,13 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.correct").value("4"));
     }
 
-    //Tests if a client can delete a user
+    // Tests if a client can delete a user
     @Test
     @Transactional
     public void testDeleteUser() throws Exception {
-        User userToDelete = new User(31, "User2",5,3);
+        User userToDelete = new User(31, "User2", 5, 3);
         when(userRepo.findBySpecificUser(any(), any())).thenReturn(Optional.of(userToDelete));
-        
+
         mvc.perform(delete("/users/{id}", 31))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -108,10 +109,10 @@ public class UserControllerTest {
     }
 
     public static String asJsonString(final Object question) {
-      try {
-          return new ObjectMapper().writeValueAsString(question);
-      } catch (Exception e) {
-          throw new RuntimeException(e);
-      }
-  }
+        try {
+            return new ObjectMapper().writeValueAsString(question);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
