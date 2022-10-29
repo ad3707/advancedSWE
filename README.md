@@ -7,7 +7,7 @@ Our API uses H2 database to store question banks for each client. Every client's
 ## How to Run Our Project
 
 1. **Clone:** run `git clone https://github.com/ad3707/advancedSWE.git` in your terminal
-2. **Install JDK 17:** Run `javac -version` in your terminal and confirm it returns `javac 17.*.*`. If the version is older, you can use this [link](https://www.oracle.com/java/technologies/downloads/#java17) to download and install the package compatible with your local machine.
+2. **Install JDK 17:** Run `javac -version` in your terminal and confirm it returns `javac 17.*.*`. If the version is older, you can [use this link](https://www.oracle.com/java/technologies/downloads/#java17) to download and install the package compatible with your local machine.
 3. **Install dependencies:** `./mvnw install`
 4. **Run tests:** `./mvnw test`
 5. **Run Clean (run before running test if error comes up):** `./mvnw clean`
