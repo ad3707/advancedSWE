@@ -258,12 +258,10 @@ Put template: "/users/{userid}/answer/{questionid}"
 1. PUT localhost:8080/users/9/answer/6
 3. Click "Body", "raw", and select "JSON" in the top text-field to edit user.
 
-Example: Send the answer as (case-insensitive):
+Example: Send the answer (case-insensitive):
 
 ```
-{
-    C
-}
+C
 ```
 
 4. Click "Send"
