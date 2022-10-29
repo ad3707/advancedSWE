@@ -27,14 +27,14 @@ Our API uses H2 database to store question banks for each client. Every client's
 
 3. In the top text-field, insert a question. For Example:
 
-{
+`{
     "name": "What is 100+8?",
     "a": "108",
     "b": "102",
     "c": "303",
     "d": "20",
     "answer": "a"
-}
+}`
 
 4. Click "Send"
 5. In the response text-field, click "Body", "Pretty", and select "JSON" from drop down options to see question just added.
