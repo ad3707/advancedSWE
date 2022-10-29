@@ -6,14 +6,15 @@ Our API uses H2 database to store question banks for each client. Every client's
 
 ## How to Run Our Project
 
-1. **Clone:** run "git clone https://github.com/ad3707/advancedSWE.git" in your terminal
-2. **Install dependencies:** ./mvnw install
-3. **Run tests:** ./mvnw test
-4. **Run Clean (run before running test if error comes up):** ./mvnw clean
+1. **Clone:** run `git clone https://github.com/ad3707/advancedSWE.git` in your terminal
+2. **Install JDK 17:** Run `javac -version` in your terminal and confirm it returns `javac 17.*.*`. If the version is older, you can use this [link](https://www.oracle.com/java/technologies/downloads/#java17) to download and install the package compatible with your local machine.
+3. **Install dependencies:** `./mvnw install`
+4. **Run tests:** `./mvnw test`
+5. **Run Clean (run before running test if error comes up):** `./mvnw clean`
 
 ## How to Test Our Project on Postman
 
-1. Run Spring-Boot from terminal: ./mvnw spring-boot:run
+1. Run Spring-Boot from terminal: `./mvnw spring-boot:run`
 2. While it is running, go to Postman: https://warped-comet-420882.postman.co/workspace/Questionnaire-API-Testing~8fba67a5-16c4-42c2-831b-9b0c3f9e6050/collection/23969942-f4487392-6f96-4cf2-b49b-f86418ef93b8?ctx=documentation
 
 ## Endpoints to Test On Postman:
