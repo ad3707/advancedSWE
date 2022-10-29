@@ -68,41 +68,35 @@ public class LeaderboardTest {
 
         Question q = new Question(2, "What is 1+1?", "1", "2", "3", "4", "B");
 
-        System.out.println("TEST START YAY");
         when(questionRepo.findBySpecificQuestion(any(), any())).thenReturn(Optional.of(q));
         when(userRepo.findBySpecificUser(any(), any())).thenReturn(Optional.of(user));
-        System.out.println("TEST END YAY");
 
-        // userRepo.save(user);
-        // questionRepo.save(q);
+        userRepo.save(user);
+        questionRepo.save(q);
 
-        // List<User> actualResults = userController.getTopKUsers(2, eq(any()));
-        // Checks if it returns correctly
-        // assertEquals(user.updateUserLeaderboard(3, 2, "A").attempted, 100, any());
+        // User outUser1 = userController.updateUserLeaderboard(3, 2, "A", eq(any()));
 
         // Attempts incorrect answer
-        mvc.perform(put("/users/{userid}/answer/{questionid}/{choice}", 3, 2, "A")
+        mvc.perform(put("/users/{userid}/answer/{questionid}", 3, 2)
+                .content("A")
                 .contentType("application/json")
                 .accept("application/json"))
                 .andExpect(status().isOk());
-        /*
-         * .andExpect(jsonPath("$.id").exists())
-         * .andExpect(jsonPath("$.name").value("NewUser"))
-         * .andExpect(jsonPath("$.attempted").value(101))
-         * .andExpect(jsonPath("$.correct").value(0));
-         */
+        // .andExpect(jsonPath("$.id").exists())
+        // .andExpect(jsonPath("$.name").value("NewUser"))
+        // .andExpect(jsonPath("$.attempted").value(101))
+        // .andExpect(jsonPath("$.correct").value(0));
 
         // Attempts correct answer
-        mvc.perform(put("/users/{userid}/answer/{questionid}/{choice}", 3, 2, "B")
+        mvc.perform(put("/users/{userid}/answer/{questionid}", 3, 2)
+                .content("B")
                 .contentType("application/json")
                 .accept("application/json"))
                 .andExpect(status().isOk());
-        /*
-         * .andExpect(jsonPath("$.id").exists())
-         * .andExpect(jsonPath("$.name").value("NewUser"))
-         * .andExpect(jsonPath("$.attempted").value(102))
-         * .andExpect(jsonPath("$.correct").value(1));
-         */
+        // .andExpect(jsonPath("$.id").exists())
+        // .andExpect(jsonPath("$.name").value("NewUser"))
+        // .andExpect(jsonPath("$.attempted").value(102))
+        // .andExpect(jsonPath("$.correct").value(1));
 
     }
 

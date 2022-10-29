@@ -103,10 +103,19 @@ public class UserController {
     // Update user to the score they gave (api: THIS user answered THIS question
     // with THIS choice)
     //
-    @PutMapping("/users/{userid}/answer/{questionid}/{choice}")
+
+    /*
+     * @PutMapping("/users/{userid}/answer/{questionid}/{choice}")
+     * public User updateUserLeaderboard(@PathVariable("userid") Integer userid,
+     * 
+     * @PathVariable("questionid") Integer questionid,
+     * 
+     * @PathVariable("choice") String choice, HttpServletRequest request) {
+     */
+    @PutMapping("/users/{userid}/answer/{questionid}")
     public User updateUserLeaderboard(@PathVariable("userid") Integer userid,
             @PathVariable("questionid") Integer questionid,
-            @PathVariable("choice") String choice, HttpServletRequest request) {
+            @RequestBody String choice, HttpServletRequest request) {
 
         System.out.println("USERFAILED");
         String ipAddr = request.getRemoteAddr();
