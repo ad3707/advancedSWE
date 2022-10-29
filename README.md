@@ -6,10 +6,10 @@ Our API uses H2 database to store question banks for each client. Every client's
 
 ## How to Run Our Project
 
-**Clone:** run "git clone https://github.com/ad3707/advancedSWE.git" in your terminal
-**Install dependencies:** ./mvnw install
-**Run tests:** ./mvnw test
-**Run Clean (run before running test if error comes up):** ./mvnw clean
+1. **Clone:** run "git clone https://github.com/ad3707/advancedSWE.git" in your terminal
+2. **Install dependencies:** ./mvnw install
+3. **Run tests:** ./mvnw test
+4. **Run Clean (run before running test if error comes up):** ./mvnw clean
 
 ## How to Test Our Project on Postman
 
