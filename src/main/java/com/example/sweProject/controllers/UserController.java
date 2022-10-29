@@ -2,8 +2,6 @@ package com.example.sweProject.controllers;
 
 import java.util.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -38,17 +36,10 @@ public class UserController {
         return users;
     }
 
-    // // GET Mappings
-
-    // @GetMapping(value = "/users", produces = "application/json")
-    // public @ResponseBody Iterable<User> getAllUsers() {
-    // Iterable<User> users = this.userRepository.findAll();
-    // return users;
-    // }
-
     @GetMapping("/users/{id}")
-    public Optional<User> getUserById(@PathVariable("id") Integer id) {
-        return this.userRepository.findById(id);
+    public Optional<User> getUserById(@PathVariable("id") Integer id, HttpServletRequest request) {
+        String ipAddr = request.getRemoteAddr();
+        return this.userRepository.findBySpecificUser(ipAddr, id);
     }
 
     // POST Mappings
@@ -102,18 +93,6 @@ public class UserController {
         return userToDelete;
     }
 
-    // Update user to the score they gave (api: THIS user answered THIS question
-    // with THIS choice)
-    //
-
-    /*
-     * @PutMapping("/users/{userid}/answer/{questionid}/{choice}")
-     * public User updateUserLeaderboard(@PathVariable("userid") Integer userid,
-     * 
-     * @PathVariable("questionid") Integer questionid,
-     * 
-     * @PathVariable("choice") String choice, HttpServletRequest request) {
-     */
     @PutMapping("/users/{userid}/answer/{questionid}")
     public User updateUserLeaderboard(@PathVariable("userid") Integer userid,
             @PathVariable("questionid") Integer questionid,
@@ -142,7 +121,6 @@ public class UserController {
             System.out.println("content length/answer is not correct");
             return null;
         }
-        System.out.println("ALLWORKED");
 
         // At this point, a valid input is guaranteed
 
@@ -154,7 +132,7 @@ public class UserController {
             userToUpdate.incrementCorrect();
         }
 
-        User outUser = this.userRepository.save(userToUpdate);
+        this.userRepository.save(userToUpdate);
         return userToUpdate;
     }
 
