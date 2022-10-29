@@ -7,6 +7,7 @@ Our API uses H2 database to store question banks for each client. Every client's
 ## How to Run Our Project
 
 **Clone:** run "git clone https://github.com/ad3707/advancedSWE.git" in your terminal
+**Install dependencies:** ./mvnw install
 **Run tests:** ./mvnw test
 **Run Clean (run before running test if error comes up):** ./mvnw clean
 
@@ -27,21 +28,24 @@ Our API uses H2 database to store question banks for each client. Every client's
 
 3. In the top text-field, insert a question. For Example:
 
-`{
+```
+{
     "name": "What is 100+8?",
     "a": "108",
     "b": "102",
     "c": "303",
     "d": "20",
     "answer": "a"
-}`
+}
+```
 
 4. Click "Send"
 5. In the response text-field, click "Body", "Pretty", and select "JSON" from drop down options to see question just added.
 
 Sample Output (the id will vary depending on how many questions already inputed):
 
-`{
+```
+{
     "id": 100,
     "name": "What is 100+8?",
     "a": "108",
@@ -50,7 +54,8 @@ Sample Output (the id will vary depending on how many questions already inputed)
     "d": "20",
     "answer": "a",
     "clientId": "0:0:0:0:0:0:0:1"
-}`
+}
+```
 
 **Edit Question**
 
@@ -59,22 +64,24 @@ Sample Output (the id will vary depending on how many questions already inputed)
 
 Example: Change above question to:
 
-`{
-    "id": 100,
+```
+{
     "name": "What is 2+8?",
     "a": "1",
     "b": "10",
     "c": "33",
     "d": "20",
     "answer": "b"
-}`
+}
+```
 
 4. Click "Send"
 5. Above response field, click "Body", "Pretty", and select "JSON" from drop down options to see edited question.
 
 Expected Repsonse:
 
-`{
+```
+{
     "id": 100,
     "name": "What is 2+8?",
     "a": "1",
@@ -83,7 +90,8 @@ Expected Repsonse:
     "d": "20",
     "answer": "b",
     "clientId": "0:0:0:0:0:0:0:1"
-}`
+}
+```
 
 **View Question**
 
@@ -94,7 +102,8 @@ Expected Repsonse:
 
 Sample Output
 
-`{
+```
+{
     "id": 100,
     "name": "What is 2+8?",
     "a": "1",
@@ -103,7 +112,8 @@ Sample Output
     "d": "20",
     "answer": "b",
     "clientId": "0:0:0:0:0:0:0:1"
-}`
+}
+```
 
 **Delete Question**
 
@@ -113,7 +123,8 @@ Sample Output
 
 Sample Output
 
-`{
+```
+{
     "id": 100,
     "name": "What is 2+8?",
     "a": "1",
@@ -122,9 +133,10 @@ Sample Output
     "d": "20",
     "answer": "b",
     "clientId": "0:0:0:0:0:0:0:1"
-}`
+}
+```
 
-**View all Questions**
+**View All Questions**
 
 1. GET localhost:8080/questions
 2. Click "Send"
@@ -133,7 +145,144 @@ Sample Output should list a all questions that have been posted and not yet dele
 
 ### Users
 
+**Create New User**
+
+1. POST localhost:8080/users
+2. Underneath, click "Body", "raw", and select "JSON".
+3. In the top text-field, insert a user. For Example:
+
+```
+{
+    "name": "Daniel",
+    "attempted": "6",
+    "correct": "5"
+}
+```
+
+4. Click "Send"
+5. In the response text-field, click "Body", "Pretty", and select "JSON" from drop down options to see user just added.
+
+Expected Response:
+
+{
+    "id": 9,
+    "name": "Daniel",
+    "attempted": "6",
+    "correct": "5"
+    "clientId": "0:0:0:0:0:0:0:1",
+    "percentCorrect": 0.8333333333333334
+}
+
+**Edit User**
+
+1. PUT localhost:8080/users/8
+3. Click "Body", "raw", and select "JSON" in the top text-field to edit user.
+
+Example: Change above user to:
+
+```
+{
+    "name": "Daniel Um",
+    "attempted": "6",
+    "correct": "5"
+}
+```
+
+4. Click "Send"
+5. Above response field, click "Body", "Pretty", and select "JSON" from drop down options to see edited user.
+
+Expected Repsonse:
+
+```
+{
+    "id": 9,
+    "name": "Daniel Um",
+    "attempted": "6",
+    "correct": "5",
+    "clientId": "0:0:0:0:0:0:0:1",
+    "percentCorrect": 0.8333333333333334
+}
+```
+
+**View User**
+
+1. GET localhost:8080/users/9
+2. Click "Send"
+3. Click "Body", "Pretty", and select "JSON" from drop down options to see the user requested.
+
+
+Sample Output
+
+```
+{
+    "id": 9,
+    "name": "Daniel Um",
+    "attempted": "6",
+    "correct": "5",
+    "clientId": "0:0:0:0:0:0:0:1",
+    "percentCorrect": 0.8333333333333334
+}
+```
+
+**Delete Question**
+
+1. DELETE localhost:8080/users/9
+2. Click "Send"
+3. Above response field, click "Body", "Pretty", and select "JSON" from drop down options to see deleted user.
+
+Sample Output
+
+```
+{
+    "id": 9,
+    "name": "Daniel Um",
+    "attempted": "6",
+    "correct": "5",
+    "clientId": "0:0:0:0:0:0:0:1",
+    "percentCorrect": 0.8333333333333334
+}
+```
+
+**View All Users**
+
+1. GET localhost:8080/users
+2. Click "Send"
+
+Sample Output should list a all users
+
+
+**Answer a Question**
+
+Put template: "/users/{userid}/answer/{questionid}"
+
+1. PUT localhost:8080/users/9/answer/6
+3. Click "Body", "raw", and select "JSON" in the top text-field to edit user.
+
+Example: Send the answer as (case-insensitive):
+
+```
+{
+    C
+}
+```
+
+4. Click "Send"
+5. Above response field, click "Body", "Pretty", and select "JSON" from drop down options to see edited user.
+
+Expected Repsonse:
+
+```
+{
+    "id": 9,
+    "name": "Daniel Um",
+    "attempted": "7",
+    "correct": "6",
+    "clientId": "0:0:0:0:0:0:0:1",
+    "percentCorrect": 0.8571428571428571
+}
+
 ### Leaderboards
+
 
 
 
