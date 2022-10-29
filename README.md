@@ -280,11 +280,18 @@ Expected Repsonse:
     "clientId": "0:0:0:0:0:0:0:1",
     "percentCorrect": 0.8571428571428571
 }
+```
 
 ### Leaderboards
 
+**Get Top K Users**
 
+Template: "/leaderboard/{k}"
 
+1. GET localhost:8080/leaderboard/2
+2. Click "Send"
+
+You should see a list of users who have the 2 highest scores (in this case)
 
 **Checkstyle Reports**:
 
