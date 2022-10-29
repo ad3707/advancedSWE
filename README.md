@@ -41,7 +41,7 @@ Our API uses H2 database to store question banks for each client. Every client's
 
 Sample Output (the id will vary depending on how many questions already inputed):
 
-{
+`{
     "id": 100,
     "name": "What is 100+8?",
     "a": "108",
@@ -50,7 +50,7 @@ Sample Output (the id will vary depending on how many questions already inputed)
     "d": "20",
     "answer": "a",
     "clientId": "0:0:0:0:0:0:0:1"
-}
+}`
 
 **Edit Question**
 
@@ -59,7 +59,7 @@ Sample Output (the id will vary depending on how many questions already inputed)
 
 Example: Change above question to:
 
-{
+`{
     "id": 100,
     "name": "What is 2+8?",
     "a": "1",
@@ -67,14 +67,14 @@ Example: Change above question to:
     "c": "33",
     "d": "20",
     "answer": "b"
-}
+}`
 
 4. Click "Send"
 5. Above response field, click "Body", "Pretty", and select "JSON" from drop down options to see edited question.
 
 Expected Repsonse:
 
-{
+`{
     "id": 100,
     "name": "What is 2+8?",
     "a": "1",
@@ -83,7 +83,7 @@ Expected Repsonse:
     "d": "20",
     "answer": "b",
     "clientId": "0:0:0:0:0:0:0:1"
-}
+}`
 
 **View Question**
 
@@ -94,7 +94,7 @@ Expected Repsonse:
 
 Sample Output
 
-{
+`{
     "id": 100,
     "name": "What is 2+8?",
     "a": "1",
@@ -103,7 +103,7 @@ Sample Output
     "d": "20",
     "answer": "b",
     "clientId": "0:0:0:0:0:0:0:1"
-}
+}`
 
 **Delete Question**
 
@@ -113,7 +113,7 @@ Sample Output
 
 Sample Output
 
-{
+`{
     "id": 100,
     "name": "What is 2+8?",
     "a": "1",
@@ -122,7 +122,7 @@ Sample Output
     "d": "20",
     "answer": "b",
     "clientId": "0:0:0:0:0:0:0:1"
-}
+}`
 
 **View all Questions**
 
