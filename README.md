@@ -164,6 +164,7 @@ Sample Output should list a all questions that have been posted and not yet dele
 
 Expected Response:
 
+```
 {
     "id": 9,
     "name": "Daniel",
@@ -172,6 +173,7 @@ Expected Response:
     "clientId": "0:0:0:0:0:0:0:1",
     "percentCorrect": 0.8333333333333334
 }
+```
 
 **Edit User**
 
