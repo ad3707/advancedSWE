@@ -37,15 +37,14 @@ public class UserController {
         Iterable<User> users = this.userRepository.findByClientId(ipAddr);
         return users;
     }
-    /*
-     * // GET Mappings
-     * 
-     * @GetMapping(value = "/users", produces = "application/json")
-     * public @ResponseBody Iterable<User> getAllUsers() {
-     * Iterable<User> users = this.userRepository.findAll();
-     * return users;
-     * }
-     */
+
+    // // GET Mappings
+
+    // @GetMapping(value = "/users", produces = "application/json")
+    // public @ResponseBody Iterable<User> getAllUsers() {
+    // Iterable<User> users = this.userRepository.findAll();
+    // return users;
+    // }
 
     @GetMapping("/users/{id}")
     public Optional<User> getUserById(@PathVariable("id") Integer id) {
@@ -54,7 +53,10 @@ public class UserController {
 
     // POST Mappings
     @PostMapping(value = "/users", produces = "application/json")
-    public @ResponseBody User createNewUser(@RequestBody User user) {
+    public @ResponseBody User createNewUser(@RequestBody User user, HttpServletRequest request) {
+        String ipAddr = request.getRemoteAddr();
+        user.setClientId(ipAddr);
+
         // should handle empty request body, bad request body, and good request body
         User newUser = this.userRepository.save(user);
         return newUser;
@@ -117,7 +119,6 @@ public class UserController {
             @PathVariable("questionid") Integer questionid,
             @RequestBody String choice, HttpServletRequest request) {
 
-        System.out.println("USERFAILED");
         String ipAddr = request.getRemoteAddr();
         // See if user exists
 
@@ -126,7 +127,7 @@ public class UserController {
             System.out.println("user doesnt exist");
             return null;
         }
-        System.out.println("QUESTIONFAILED");
+
         // See if question exists
         Optional<Question> questionToUpdateOptional = this.questionRepository.findBySpecificQuestion(ipAddr,
                 questionid);
@@ -134,7 +135,7 @@ public class UserController {
             System.out.println("question doesnt exist");
             return null;
         }
-        System.out.println("CHOICEFAILED");
+
         // See if the choice is valid
         if (choice.length() != 1 || !(choice.charAt(0) >= 'A' && choice.charAt(0) <= 'D'
                 || choice.charAt(0) >= 'a' && choice.charAt(0) <= 'd')) {
