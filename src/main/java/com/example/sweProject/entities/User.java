@@ -2,9 +2,9 @@ package com.example.sweProject.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "USERS")
@@ -26,20 +26,56 @@ public class User {
     @Column(name = "CLIENT_ID")
     private String clientId;
 
+    public User() {
+        this.attempted = 0;
+        this.correct = 0;
+    }
+
+    public User(final Integer id, final String name) {
+        this.id = id;
+        this.name = name;
+        this.attempted = 0;
+        this.correct = 0;
+    }
+
+    public User(final Integer id, final String name, final int attempted,
+                final int correct) {
+        this.id = id;
+        this.name = name;
+        this.attempted = attempted;
+        this.correct = correct;
+    }
+
     public Integer getId() {
         return this.id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return this.name;
     }
 
+    public void setName(final String name) {
+        this.name = name;
+    }
+
     public int getAttempted() {
         return this.attempted;
     }
 
+    public void setAttempted(final int attempted) {
+        this.attempted = attempted;
+    }
+
     public int getCorrect() {
         return this.correct;
+    }
+
+    public void setCorrect(final int correct) {
+        this.correct = correct;
     }
 
     public double getPercentCorrect() {
@@ -50,24 +86,8 @@ public class User {
         return this.clientId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAttempted(int attempted) {
-        this.attempted = attempted;
-    }
-
-    public void setCorrect(int correct) {
-        this.correct = correct;
-    }
-
-    public String setClientId(String clientId) {
-        return this.clientId = clientId;
+    public void setClientId(final String clientId) {
+        this.clientId = clientId;
     }
 
     public void incrementAttempted() {
@@ -76,24 +96,5 @@ public class User {
 
     public void incrementCorrect() {
         this.correct++;
-    }
-
-    public User() {
-        this.attempted = 0;
-        this.correct = 0;
-    }
-
-    public User(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-        this.attempted = 0;
-        this.correct = 0;
-    }
-
-    public User(Integer id, String name, int attempted, int correct) {
-        this.id = id;
-        this.name = name;
-        this.attempted = attempted;
-        this.correct = correct;
     }
 }

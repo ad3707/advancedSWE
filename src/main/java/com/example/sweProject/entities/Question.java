@@ -2,117 +2,119 @@ package com.example.sweProject.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "QUESTIONS")
 public class Question {
 
-  // Instance Variables/Table columns
-  @Id
-  @GeneratedValue // id is automatically generated when new Question is created via POST
-  private Integer id;
+    // Instance Variables/Table columns
+    @Id
+    @GeneratedValue // generates id when new Question is created
+    private Integer id;
 
-  @Column(name = "NAME")
-  private String name;
+    @Column(name = "NAME")
+    private String name;
 
-  @Column(name = "A")
-  private String a;
+    @Column(name = "A")
+    private String a;
 
-  @Column(name = "B")
-  private String b;
+    @Column(name = "B")
+    private String b;
 
-  @Column(name = "C")
-  private String c;
+    @Column(name = "C")
+    private String c;
 
-  @Column(name = "D")
-  private String d;
+    @Column(name = "D")
+    private String d;
 
-  @Column(name = "ANSWER")
-  private String answer;
+    @Column(name = "ANSWER")
+    private String answer;
 
-  @Column(name = "CLIENT_ID")
-  private String clientId;
+    @Column(name = "CLIENT_ID")
+    private String clientId;
 
-  // Constructors
-  public Question() {
-  }
+    // Constructors
+    public Question() {
+    }
 
-  public Question(Integer id, String name, String a, String b, String c, String d, String answer) {
-    this.id = id;
-    this.name = name;
-    this.a = a;
-    this.b = b;
-    this.c = c;
-    this.d = d;
-    this.answer = answer;
-  }
+    public Question(final Integer id, final String name, final String a,
+                    final String b, final String c,
+                    final String d, final String answer) {
+        this.id = id;
+        this.name = name;
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
+        this.answer = answer;
+    }
 
-  // Getters
-  public Integer getId() {
-    return this.id;
-  }
+    // Getters
+    public Integer getId() {
+        return this.id;
+    }
 
-  public String getName() {
-    return this.name;
-  }
+    // Setters
+    public void setId(final Integer id) {
+        this.id = id;
+    }
 
-  public String getA() {
-    return this.a;
-  }
+    public String getName() {
+        return this.name;
+    }
 
-  public String getB() {
-    return this.b;
-  }
+    public void setName(final String name) {
+        this.name = name;
+    }
 
-  public String getC() {
-    return this.c;
-  }
+    public String getA() {
+        return this.a;
+    }
 
-  public String getD() {
-    return this.d;
-  }
+    public void setA(final String a) {
+        this.a = a;
+    }
 
-  public String getAnswer() {
-    return this.answer;
-  }
+    public String getB() {
+        return this.b;
+    }
 
-  public String getClientId() {
-    return this.clientId;
-  }
+    public void setB(final String b) {
+        this.b = b;
+    }
 
-  // Setters
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public String getC() {
+        return this.c;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setC(final String c) {
+        this.c = c;
+    }
 
-  public void setA(String a) {
-    this.a = a;
-  }
+    public String getD() {
+        return this.d;
+    }
 
-  public void setB(String b) {
-    this.b = b;
-  }
+    public void setD(final String d) {
+        this.d = d;
+    }
 
-  public void setC(String c) {
-    this.c = c;
-  }
+    public String getAnswer() {
+        return this.answer;
+    }
 
-  public void setD(String d) {
-    this.d = d;
-  }
+    public void setAnswer(final String answer) {
+        this.answer = answer;
+    }
 
-  public void setAnswer(String answer) {
-    this.answer = answer;
-  }
+    public String getClientId() {
+        return this.clientId;
+    }
 
-  public void setClientId(String clientId) {
-    this.clientId = clientId;
-  }
+    public void setClientId(final String clientId) {
+        this.clientId = clientId;
+    }
 }
