@@ -80,6 +80,27 @@ public class QuestionControllerTest {
                 .andExpect(jsonPath("$.answer").value("C"));
     }
 
+    // Test to see if a user can add an incomplete question
+    @Test
+    @Transactional
+    public void testPostIncompleteQuestion() throws Exception {
+        Question q = new Question(2, "What is 1 + 0?", "1", null, null, null, "a");
+
+        when(questionRepo.save(any())).thenReturn(q);
+
+        mvc.perform(post("/questions")
+                .content(asJsonString(q))
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.a").value("1"))
+                .andExpect(jsonPath("$.b").doesNotExist())
+                .andExpect(jsonPath("$.c").doesNotExist())
+                .andExpect(jsonPath("$.d").doesNotExist())
+                .andExpect(jsonPath("$.answer").value("a"));
+    }
+
     // Tests if client can update a question
     @Test
     @Transactional // ensures that the interactions you have with the database are rolled back at
@@ -104,6 +125,21 @@ public class QuestionControllerTest {
                 .andExpect(jsonPath("$.answer").value("c"));
     }
 
+    // Tests if client can update a question that does not exist
+    @Test
+    @Transactional // ensures that the interactions you have with the database are rolled back at
+                   // the end of each test
+    public void testUpdateNonexistantQuestions() throws Exception {
+        Question newQuestion = new Question(31, "What is 1+2?", null, null, null, null, "c");
+
+        mvc.perform(put("/questions/{id}", 31)
+                .content(asJsonString(newQuestion))
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").doesNotExist());
+    }
+
     // Tests if a client can delete a quesiton
     @Test
     @Transactional
@@ -120,6 +156,16 @@ public class QuestionControllerTest {
                 .andExpect(jsonPath("$.c").value("3"))
                 .andExpect(jsonPath("$.d").value("4"))
                 .andExpect(jsonPath("$.answer").value("b"));
+
+    }
+
+    // Tests if a client can attempt to delete a quesiton that does not exist
+    @Test
+    @Transactional
+    public void testDeleteNonexistantQuestion() throws Exception {
+        mvc.perform(delete("/questions/{id}", 100))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").doesNotExist());
 
     }
 

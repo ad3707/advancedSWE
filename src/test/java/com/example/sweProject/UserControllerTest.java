@@ -73,6 +73,24 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.correct").value(2));
     }
 
+    // Tests if client can post an incomplete user (no attempted/correct initially
+    // defined)
+    @Test
+    @Transactional
+    public void testPostIncompleteUser() throws Exception {
+        User user = new User(2, "User2");
+        when(userRepo.save(any())).thenReturn(user);
+        mvc.perform(post("/users")
+                .content(asJsonString(user))
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").value("User2"))
+                .andExpect(jsonPath("$.attempted").value(0))
+                .andExpect(jsonPath("$.correct").value(0));
+    }
+
     // Tests if client can update a user
     @Test
     @Transactional // ensures that the interactions you have with the database are rolled back at
@@ -93,6 +111,21 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.correct").value("4"));
     }
 
+    // Tests if client can update a nonexistant user
+    @Test
+    @Transactional // ensures that the interactions you have with the database are rolled back at
+                   // the end of each test
+    public void testUpdateNonexistantUsers() throws Exception {
+        User newUser = new User(32, null, 6, 4);
+
+        mvc.perform(put("/users/{id}", 32)
+                .content(asJsonString(newUser))
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").doesNotExist());
+    }
+
     // Tests if a client can delete a user
     @Test
     @Transactional
@@ -106,6 +139,16 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name").value("User2"))
                 .andExpect(jsonPath("$.attempted").value(5))
                 .andExpect(jsonPath("$.correct").value(3));
+    }
+
+    // Tests if a client can delete a nonexistant user
+    @Test
+    @Transactional
+    public void testDeleteNonexistantUser() throws Exception {
+
+        mvc.perform(delete("/users/{id}", 31))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").doesNotExist());
     }
 
     public static String asJsonString(final Object question) {

@@ -100,6 +100,66 @@ public class LeaderboardTest {
 
     }
 
+    // Have a user attempt a question but the user doesnt exist
+    @Test
+    @Transactional
+    public void updateNonexistantUserLeaderboardAPI() throws Exception {
+        Question q = new Question(2, "What is 1+1?", "1", "2", "3", "4", "B");
+
+        when(questionRepo.findBySpecificQuestion(any(), any())).thenReturn(Optional.of(q));
+        questionRepo.save(q);
+
+        // User outUser1 = userController.updateUserLeaderboard(3, 2, "A", eq(any()));
+
+        // Attempts incorrect user
+        mvc.perform(put("/users/{userid}/answer/{questionid}", 3, 2)
+                .content("A")
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").doesNotExist());
+    }
+
+    // Have a user attempt a question but the question doesnt exist
+    @Test
+    @Transactional
+    public void updateUserNonexistantQuestionLeaderboardAPI() throws Exception {
+        User user = new User(3, "NewUser", 100, 0);
+        when(userRepo.findBySpecificUser(any(), any())).thenReturn(Optional.of(user));
+
+        userRepo.save(user);
+
+        // Attempts incorrect question
+        mvc.perform(put("/users/{userid}/answer/{questionid}", 3, 2)
+                .content("A")
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").doesNotExist());
+    }
+
+    // Have a user attempt a question but the answer doesn't exist
+    @Test
+    @Transactional
+    public void updateUserNonexistantAnswerLeaderboardAPI() throws Exception {
+        User user = new User(3, "NewUser", 100, 0);
+        Question q = new Question(2, "What is 1+1?", "1", "2", "3", "4", "B");
+
+        when(questionRepo.findBySpecificQuestion(any(), any())).thenReturn(Optional.of(q));
+        when(userRepo.findBySpecificUser(any(), any())).thenReturn(Optional.of(user));
+
+        userRepo.save(user);
+        questionRepo.save(q);
+
+        // Attempts incorrect question
+        mvc.perform(put("/users/{userid}/answer/{questionid}", 3, 2)
+                .content("E")
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").doesNotExist());
+    }
+
     // Tests to see if the client receives the correct top k users
     @Test
     public void getTopKUsersTest() throws Exception {
@@ -122,6 +182,33 @@ public class LeaderboardTest {
         // Checks if it returns correctly
         assertEquals(u3.getName(), actualResults.get(0).getName());
         assertEquals(u1.getName(), actualResults.get(1).getName());
+    }
+
+    // Tests to see if K can be greater than the population (assumed yes but result
+    // will not be K length)
+    @Test
+    public void getTopKUsersExceedSizeTest() throws Exception {
+        // Creates 3 users which different score percents
+        User u1 = new User(1, "U1", 10, 5);
+        User u2 = new User(1, "U2", 20, 5);
+        User u3 = new User(1, "U3", 5, 5);
+
+        userRepo.save(u1);
+        userRepo.save(u2);
+        userRepo.save(u3);
+
+        List<User> topKUsersList = new ArrayList<>();
+        topKUsersList.add(u3);
+        topKUsersList.add(u1);
+        topKUsersList.add(u2);
+
+        given(userController.getTopKUsers(2, eq(any()))).willReturn(topKUsersList);
+
+        List<User> actualResults = userController.getTopKUsers(4, eq(any()));
+        // Checks if it returns correctly
+        assertEquals(u3.getName(), actualResults.get(0).getName());
+        assertEquals(u1.getName(), actualResults.get(1).getName());
+        assertEquals(u2.getName(), actualResults.get(2).getName());
     }
 
     public static String asJsonString(final Object question) {

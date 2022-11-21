@@ -38,8 +38,8 @@ public class User {
         this.correct = 0;
     }
 
-    public User(final Integer id, final String name, final int attempted,
-                final int correct) {
+    public User(final Integer id, final String name, final Integer attempted,
+            final Integer correct) {
         this.id = id;
         this.name = name;
         this.attempted = attempted;
