@@ -20,10 +20,6 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file advancedSWE/pom.xml -Dmaven.test.skip=true
     - name: Run UserTest
-      run:  mvn -Dtest=UserTest test
-
-      run: cp FantasyBasketball/target/surefire-reports/*.txt UnitTests
-    - uses: EndBug/add-and-commit@v7
-      with:
-        add: UnitTesting/.
-        default_actor: github_actions
+      run:  mvn test
+    - name: Clean
+      run:  mvn clean
