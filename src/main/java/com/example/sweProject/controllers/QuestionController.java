@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 
 @RestController
 @CrossOrigin
