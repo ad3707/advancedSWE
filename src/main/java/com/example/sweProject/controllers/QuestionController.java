@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 public class QuestionController {
     private final QuestionRepository questionRepository;
 
