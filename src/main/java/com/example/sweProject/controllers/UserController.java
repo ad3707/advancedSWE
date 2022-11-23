@@ -4,6 +4,8 @@ import com.example.sweProject.entities.Question;
 import com.example.sweProject.entities.User;
 import com.example.sweProject.repositories.QuestionRepository;
 import com.example.sweProject.repositories.UserRepository;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
