@@ -194,7 +194,7 @@ Example: Change above user to:
 4. Click "Send"
 5. Above response field, click "Body", "Pretty", and select "JSON" from drop down options to see edited user.
 
-Expected Repsonse:
+Expected Response:
 
 ```
 {
@@ -270,7 +270,7 @@ C
 4. Click "Send"
 5. Above response field, click "Body", "Pretty", and select "JSON" from drop down options to see edited user.
 
-Expected Repsonse:
+Expected Response:
 
 ```
 {
