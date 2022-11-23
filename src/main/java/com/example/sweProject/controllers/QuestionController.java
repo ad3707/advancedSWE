@@ -2,7 +2,14 @@ package com.example.sweProject.controllers;
 
 import com.example.sweProject.entities.Question;
 import com.example.sweProject.repositories.QuestionRepository;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -23,7 +30,8 @@ public class QuestionController {
     public @ResponseBody Iterable<Question> getAllQuestions(
             final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
-        Iterable<Question> questions = this.questionRepository.findByClientId(ipAddr);
+        Iterable<Question> questions =
+                this.questionRepository.findByClientId(ipAddr);
         return questions;
     }
 
@@ -50,11 +58,12 @@ public class QuestionController {
     // PUT Mappings
     @PutMapping("/questions/{id}")
     public Question updateQuestion(final @PathVariable("id") Integer id,
-            final @RequestBody Question p,
-            final HttpServletRequest request) {
+                                   final @RequestBody Question p,
+                                   final HttpServletRequest request) {
         // check if question with {id} exists in database
         String ipAddr = request.getRemoteAddr();
-        Optional<Question> questionToUpdateOptional = this.questionRepository.findBySpecificQuestion(ipAddr, id);
+        Optional<Question> questionToUpdateOptional =
+                this.questionRepository.findBySpecificQuestion(ipAddr, id);
 
         // if question with {id} does not exist in database, return null
         if (!questionToUpdateOptional.isPresent()) {
@@ -96,10 +105,11 @@ public class QuestionController {
     // DELETE Mappings
     @DeleteMapping("/questions/{id}")
     public Question deleteQuestion(final @PathVariable("id") Integer id,
-            final HttpServletRequest request) {
+                                   final HttpServletRequest request) {
         // check if question with {id} exists in database
         String ipAddr = request.getRemoteAddr();
-        Optional<Question> questionToDeleteOptional = this.questionRepository.findBySpecificQuestion(ipAddr, id);
+        Optional<Question> questionToDeleteOptional =
+                this.questionRepository.findBySpecificQuestion(ipAddr, id);
 
         // if {id} does not exist in database, return null
         if (!questionToDeleteOptional.isPresent()) {
