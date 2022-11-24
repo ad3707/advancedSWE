@@ -4,6 +4,7 @@ sonarqube/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+sonarqube/
 
 ### STS ###
 .apt_generated
