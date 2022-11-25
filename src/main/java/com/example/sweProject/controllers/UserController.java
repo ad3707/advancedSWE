@@ -29,7 +29,7 @@ public class UserController {
     private final QuestionRepository questionRepository;
 
     public UserController(final UserRepository userRepository,
-                          final QuestionRepository questionRepository) {
+            final QuestionRepository questionRepository) {
         this.userRepository = userRepository;
         this.questionRepository = questionRepository;
     }
@@ -45,7 +45,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public Optional<User> getUserById(final @PathVariable("id") Integer id,
-                                      final HttpServletRequest request) {
+            final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
         return this.userRepository.findBySpecificUser(ipAddr, id);
     }
@@ -53,7 +53,7 @@ public class UserController {
     // POST Mappings
     @PostMapping(value = "/users", produces = "application/json")
     public @ResponseBody User createNewUser(final @RequestBody User user,
-                                            final HttpServletRequest request) {
+            final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
         user.setClientId(ipAddr);
 
@@ -64,11 +64,10 @@ public class UserController {
     // PUT Mappings
     @PutMapping(value = "/users/{id}") // produces="application/json")
     public User updateUser(final @PathVariable("id") Integer id,
-                           final @RequestBody User updatedUser,
-                           final HttpServletRequest request) {
+            final @RequestBody User updatedUser,
+            final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
-        Optional<User> userToUpdateOptional =
-                this.userRepository.findBySpecificUser(ipAddr, id);
+        Optional<User> userToUpdateOptional = this.userRepository.findBySpecificUser(ipAddr, id);
 
         if (!userToUpdateOptional.isPresent()) {
             return null;
@@ -94,10 +93,9 @@ public class UserController {
     // DELETE Mappings
     @DeleteMapping("/users/{id}")
     public User deleteUser(final @PathVariable("id") Integer id,
-                           final HttpServletRequest request) {
+            final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
-        Optional<User> userToDeleteOptional =
-                this.userRepository.findBySpecificUser(ipAddr, id);
+        Optional<User> userToDeleteOptional = this.userRepository.findBySpecificUser(ipAddr, id);
         if (!userToDeleteOptional.isPresent()) {
             return null;
         }
@@ -106,60 +104,10 @@ public class UserController {
         return userToDelete;
     }
 
-    @PutMapping("/users/{userid}/answer/{questionid}")
-    public User updateUserLeaderboard(
-            final @PathVariable("userid") Integer userid,
-            final @PathVariable("questionid") Integer questionid,
-            final @RequestBody String choice,
-            final HttpServletRequest request) {
-
-        String ipAddr = request.getRemoteAddr();
-        // See if user exists
-
-        Optional<User> userToUpdateOptional =
-                this.userRepository.findBySpecificUser(ipAddr, userid);
-        if (!userToUpdateOptional.isPresent()) {
-            System.out.println("user doesnt exist");
-            return null;
-        }
-
-        // See if question exists
-        Optional<Question> questionToUpdateOptional =
-                this.questionRepository.findBySpecificQuestion(ipAddr,
-                        questionid);
-        if (!questionToUpdateOptional.isPresent()) {
-            System.out.println("question doesnt exist");
-            return null;
-        }
-
-        // See if the choice is valid
-        if (choice.length() != 1
-                || !(choice.charAt(0) >= 'A' && choice.charAt(0) <= 'D'
-                ||
-                choice.charAt(0) >= 'a' && choice.charAt(0) <= 'd')) {
-            System.out.println("content length/answer is not correct");
-            return null;
-        }
-
-        // At this point, a valid input is guaranteed
-
-        User userToUpdate = userToUpdateOptional.get();
-        Question questionAttempted = questionToUpdateOptional.get();
-
-        userToUpdate.incrementAttempted();
-        if (choice.toLowerCase()
-                .equals(questionAttempted.getAnswer().toLowerCase())) {
-            userToUpdate.incrementCorrect();
-        }
-
-        this.userRepository.save(userToUpdate);
-        return userToUpdate;
-    }
-
     // Get top k users
     @GetMapping("/leaderboard/{k}")
     public List<User> getTopKUsers(final @PathVariable("k") Integer k,
-                                   final HttpServletRequest request) {
+            final HttpServletRequest request) {
 
         if (k == null) {
             return null;
