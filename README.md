@@ -4,6 +4,51 @@ Our API is a question bank framework in which clients can create, update and del
 
 Our API uses H2 database to store question banks for each client. Every client's information is stored separately and cannot be accessed from another client. To use our API, the user needs to first boot up our Spring server by running `./mvnw spring-boot:run`. The user can then use curl commands to create, update or delete questions. Testing can be done by accessing our [Postman API](https://warped-comet-420882.postman.co/workspace/Questionnaire-API-Testing~8fba67a5-16c4-42c2-831b-9b0c3f9e6050/overview). To access our database, go to web broswer and enter `localhost:8080/h2-console`.
 
+## SonarQube
+
+**Currently working with SonarCube locally (will integrate with CI GitHub Workflows soon)**
+
+**Pull most recent version of GitHub repository code:** we have put sonarcube in gitignore because it is a really big file. You only need to download it once for now
+
+((Download SonarQube:**
+1. Download and install Java 11 on your system.
+2. Download the SonarQube Community Edition zip file.
+3. Unzip the downloaded file and rename the folder ‘sonarqube’
+4. Move this file inside your ‘advancedSWE’ folder (unable to push it to GitHub for some reason so need to do it this way)
+
+**To start Sonarcube server (run in terminal from advancedSWE folder; will take some time to load):**
+./sonarqube/bin/macosx-universal-64/sonar.sh console
+
+**Go to home page:** http://localhost:9000/
+	Username: admin
+	Password: admin
+
+You can change the password to whatever you like since this will be local to your computer
+
+**Create a new project; follow the steps**
+
+**Select ‘maven’ and copy the code**
+**Replace the first line with:** ./mvnw test sonar:sonar \
+
+**Run Sonarcube in another terminal tab (can do directly from VSCode terminal):**
+It should look something like this (but will vary when you do it with your account)
+./mvnw test sonar:sonar \
+  -Dsonar.projectKey=SWE-Questionnaire-API \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.login=sqp_c5c3a7e22937ee7d5eb02e7698fc99d383c859a1
+
+Uses target folder to get unit test coverage report. Use “verify” instead of “test” for integration test
+
+**See results:** http://localhost:9000/dashboard?id=SWE-Questionnaire-API
+
+**Go to “Overall Code” tab**
+- Bugs
+- Vulnerabilities
+- Security hotspots
+- Technical debt (how much time it will take to fix errors)
+- Code smells
+- Code coverage
+
 ## How to Run Our Project
 
 1. **Clone:** run `git clone https://github.com/ad3707/advancedSWE.git` in your terminal
