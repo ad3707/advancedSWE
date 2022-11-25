@@ -67,7 +67,7 @@ public class UserControllerTest {
 
     // Test to see that a client receives all the users
     @Test
-    public void getUsers() throws Exception {
+    void getUsers() throws Exception {
         User u = new User(3, "User1", 5, 2);
         List<User> allUsers = new ArrayList<>();
         allUsers.add(u);
@@ -86,7 +86,7 @@ public class UserControllerTest {
     // Tests if client can post a user
     @Test
     @Transactional
-    public void testPostUser() throws Exception {
+    void testPostUser() throws Exception {
         User user = new User(2, "User2", 6, 2);
         when(userRepo.save(any())).thenReturn(user);
         mvc.perform(post("/users")
@@ -106,7 +106,7 @@ public class UserControllerTest {
     // defined)
     @Test
     @Transactional
-    public void testPostIncompleteUser() throws Exception {
+    void testPostIncompleteUser() throws Exception {
         User user = new User(2, "User2");
         when(userRepo.save(any())).thenReturn(user);
         mvc.perform(post("/users")
@@ -127,7 +127,7 @@ public class UserControllerTest {
     @Transactional
     // ensures that the interactions you have with the database are rolled back at
     // the end of each test
-    public void testUpdateUsers() throws Exception {
+    void testUpdateUsers() throws Exception {
         User originalUser = new User(31, "User31", 5, 3);
         User newUser = new User(31, null, 6, 4);
         when(userRepo.findBySpecificUser(any(), any())).thenReturn(
@@ -151,7 +151,7 @@ public class UserControllerTest {
     @Transactional
     // ensures that the interactions you have with the database are rolled back at
     // the end of each test
-    public void testUpdateNonexistentUsers() throws Exception {
+    void testUpdateNonexistentUsers() throws Exception {
         User newUser = new User(32, null, 6, 4);
 
         mvc.perform(put("/users/{id}", 32)
@@ -167,7 +167,7 @@ public class UserControllerTest {
     // Tests if a client can delete a user
     @Test
     @Transactional
-    public void testDeleteUser() throws Exception {
+    void testDeleteUser() throws Exception {
         User userToDelete = new User(31, "User2", 5, 3);
         when(userRepo.findBySpecificUser(any(), any())).thenReturn(
                 Optional.of(userToDelete));
@@ -185,7 +185,7 @@ public class UserControllerTest {
     // Tests if a client can delete a nonexistent user
     @Test
     @Transactional
-    public void testDeleteNonexistentUser() throws Exception {
+    void testDeleteNonexistentUser() throws Exception {
 
         mvc.perform(delete("/users/{id}", 31)
                         .header("authorization",

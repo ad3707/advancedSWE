@@ -30,9 +30,7 @@ public class QuestionController {
     public @ResponseBody Iterable<Question> getAllQuestions(
             final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
-        Iterable<Question> questions =
-                this.questionRepository.findByClientId(ipAddr);
-        return questions;
+        return this.questionRepository.findByClientId(ipAddr);
     }
 
     @GetMapping("/questions/{id}")
@@ -51,8 +49,7 @@ public class QuestionController {
         String ipAddr = request.getRemoteAddr();
         question.setClientId(ipAddr);
 
-        Question newQuestion = this.questionRepository.save(question);
-        return newQuestion;
+        return this.questionRepository.save(question);
     }
 
     // PUT Mappings

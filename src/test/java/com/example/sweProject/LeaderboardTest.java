@@ -71,7 +71,7 @@ public class LeaderboardTest {
 
         // Tests to see if the client receives the correct top k users
         @Test
-        public void getTopKUsersTest() throws Exception {
+        void getTopKUsersTest() throws Exception {
                 // Creates 3 users which different score percents
                 User u1 = new User(1, "U1", 10, 5);
                 User u2 = new User(1, "U2", 20, 5);
@@ -97,7 +97,7 @@ public class LeaderboardTest {
         // Tests to see if K can be greater than the population (assumed yes but result
         // will not be K length)
         @Test
-        public void getTopKUsersExceedSizeTest() throws Exception {
+        void getTopKUsersExceedSizeTest() throws Exception {
                 // Creates 3 users which different score percents
                 User u1 = new User(1, "U1", 10, 5);
                 User u2 = new User(1, "U2", 20, 5);

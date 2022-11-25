@@ -64,7 +64,7 @@ public class QuestionControllerTest {
 
     // Test to see that unauthorized get requests fail
     @Test
-    public void testUnauthorizedGetQuestionsRequest() throws Exception {
+    void testUnauthorizedGetQuestionsRequest() throws Exception {
         Question q = new Question(2, "What is 1+1?", "1", "2", "3", "4", "A");
         List<Question> allQuestions = new ArrayList<>();
         allQuestions.add(q);
@@ -82,7 +82,7 @@ public class QuestionControllerTest {
 
     // Test to see that a client receives all the questions in the database
     @Test
-    public void testGetQuestions() throws Exception {
+    void testGetQuestions() throws Exception {
         Question q = new Question(2, "What is 1+1?", "1", "2", "3", "4", "A");
         List<Question> allQuestions = new ArrayList<>();
         allQuestions.add(q);
@@ -110,7 +110,7 @@ public class QuestionControllerTest {
     // Test to see if a user can add a question
     @Test
     @Transactional
-    public void testPostQuestion() throws Exception {
+    void testPostQuestion() throws Exception {
         Question q = new Question(1, "What is 1 + 2?", "1", "2", "3", "4", "C");
 
         when(questionRepo.save(any())).thenReturn(q);
@@ -133,7 +133,7 @@ public class QuestionControllerTest {
     // Test to see if a user can add an incomplete question
     @Test
     @Transactional
-    public void testPostIncompleteQuestion() throws Exception {
+    void testPostIncompleteQuestion() throws Exception {
         Question q =
                 new Question(2, "What is 1 + 0?", "1", null, null, null, "a");
 
@@ -159,7 +159,7 @@ public class QuestionControllerTest {
     @Transactional
     // ensures that the interactions you have with the database are rolled back at
     // the end of each test
-    public void testUpdateQuestions() throws Exception {
+    void testUpdateQuestions() throws Exception {
         Question originalQuestion =
                 new Question(31, "What is 1+1?", "1", "2", "3", "4", "b");
         Question newQuestion =
@@ -189,7 +189,7 @@ public class QuestionControllerTest {
     @Transactional
     // ensures that the interactions you have with the database are rolled back at
     // the end of each test
-    public void testUpdateNonexistentQuestions() throws Exception {
+    void testUpdateNonexistentQuestions() throws Exception {
         Question newQuestion =
                 new Question(31, "What is 1+2?", null, null, null, null, "c");
 
@@ -206,7 +206,7 @@ public class QuestionControllerTest {
     // Tests if a client can delete a question
     @Test
     @Transactional
-    public void testDeleteQuestion() throws Exception {
+    void testDeleteQuestion() throws Exception {
         Question questionToDelete =
                 new Question(31, "What is 1+1?", "1", "2", "3", "4", "b");
         when(questionRepo.findBySpecificQuestion(any(), any())).thenReturn(
@@ -229,7 +229,7 @@ public class QuestionControllerTest {
     // Tests if a client can attempt to delete a question that does not exist
     @Test
     @Transactional
-    public void testDeleteNonexistentQuestion() throws Exception {
+    void testDeleteNonexistentQuestion() throws Exception {
         mvc.perform(delete("/questions/{id}", 100)
                         .header("authorization",
                                 getBearerToken()))

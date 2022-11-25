@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.PriorityQueue;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -39,8 +36,7 @@ public class UserController {
     public @ResponseBody Iterable<User> getAllUsers(
             final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
-        Iterable<User> users = this.userRepository.findByClientId(ipAddr);
-        return users;
+        return this.userRepository.findByClientId(ipAddr);
     }
 
     @GetMapping("/users/{id}")
@@ -57,8 +53,7 @@ public class UserController {
         String ipAddr = request.getRemoteAddr();
         user.setClientId(ipAddr);
 
-        User newUser = this.userRepository.save(user);
-        return newUser;
+        return this.userRepository.save(user);
     }
 
     // PUT Mappings
@@ -110,7 +105,7 @@ public class UserController {
             final HttpServletRequest request) {
 
         if (k == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         PriorityQueue<User> pq = new PriorityQueue<>(

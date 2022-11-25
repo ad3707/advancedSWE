@@ -67,7 +67,7 @@ public class UserClassTest {
 
     // Tests to see if the first constructor works properly
     @Test
-    public void constructorTest1() throws Exception {
+    void constructorTest1() throws Exception {
         // Creates 3 users which different score percents
         User u2 = new User(2, "U2");
 
@@ -79,7 +79,7 @@ public class UserClassTest {
 
     // Tests to see if the second constructor works properly
     @Test
-    public void constructorTest2() throws Exception {
+    void constructorTest2() throws Exception {
         // Creates 3 users which different score percents
         User u3 = new User(3, "U3", 15, 8);
 
@@ -91,31 +91,31 @@ public class UserClassTest {
 
     // Tests to see if the get id method works properly
     @Test
-    public void getIdTest() throws Exception {
+    void getIdTest() throws Exception {
         assertEquals(new Integer(1), u1.getId());
     }
 
     // Tests to see if the get name method works properly
     @Test
-    public void getNameTest() throws Exception {
+    void getNameTest() throws Exception {
         assertEquals("U1", u1.getName());
     }
 
     // Tests to see if the get attempted method works properly
     @Test
-    public void getAttemptedTest() throws Exception {
+    void getAttemptedTest() throws Exception {
         assertEquals(10, u1.getAttempted());
     }
 
     // Tests to see if the get correct method works properly
     @Test
-    public void getCorrectTest() throws Exception {
+    void getCorrectTest() throws Exception {
         assertEquals(5, u1.getCorrect());
     }
 
     // Tests to see if the set id method works properly
     @Test
-    public void setIdTest() throws Exception {
+    void setIdTest() throws Exception {
         u1.setId(10);
 
         assertEquals(new Integer(10), u1.getId());
@@ -123,7 +123,7 @@ public class UserClassTest {
 
     // Tests to see if the set name method works properly
     @Test
-    public void setNameTest() throws Exception {
+    void setNameTest() throws Exception {
         u1.setName("U2");
 
         assertEquals("U2", u1.getName());
@@ -131,7 +131,7 @@ public class UserClassTest {
 
     // Tests to see if the set attempted method works properly
     @Test
-    public void setAttemptedTest() throws Exception {
+    void setAttemptedTest() throws Exception {
         u1.setAttempted(20);
 
         assertEquals(20, u1.getAttempted());
@@ -139,7 +139,7 @@ public class UserClassTest {
 
     // Tests to see if the set correct method works properly
     @Test
-    public void setCorrectTest() throws Exception {
+    void setCorrectTest() throws Exception {
         u1.setCorrect(6);
 
         assertEquals(6, u1.getCorrect());
