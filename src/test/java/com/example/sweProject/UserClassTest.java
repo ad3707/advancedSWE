@@ -37,6 +37,8 @@ public class UserClassTest {
     @Autowired
     private MockMvc mvc;
 
+    User u1 = new User(1, "U1", 10, 5);
+
     public static String asJsonString(final Object question) {
         try {
             return new ObjectMapper().writeValueAsString(question);
@@ -67,67 +69,53 @@ public class UserClassTest {
     @Test
     public void constructorTest1() throws Exception {
         // Creates 3 users which different score percents
-        User u1 = new User(1, "U1");
+        User u2 = new User(2, "U2");
 
-        assertEquals(new Integer(1), u1.getId());
-        assertEquals("U1", u1.getName());
-        assertEquals(0, u1.getAttempted());
-        assertEquals(0, u1.getCorrect());
+        assertEquals(new Integer(2), u2.getId());
+        assertEquals("U2", u2.getName());
+        assertEquals(0, u2.getAttempted());
+        assertEquals(0, u2.getCorrect());
     }
 
     // Tests to see if the second constructor works properly
     @Test
     public void constructorTest2() throws Exception {
         // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
+        User u3 = new User(3, "U3", 15, 8);
 
-        assertEquals(new Integer(1), u1.getId());
-        assertEquals("U1", u1.getName());
-        assertEquals(10, u1.getAttempted());
-        assertEquals(5, u1.getCorrect());
+        assertEquals(new Integer(3), u3.getId());
+        assertEquals("U3", u3.getName());
+        assertEquals(15, u3.getAttempted());
+        assertEquals(8, u3.getCorrect());
     }
 
     // Tests to see if the get id method works properly
     @Test
     public void getIdTest() throws Exception {
-        // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
-
         assertEquals(new Integer(1), u1.getId());
     }
 
     // Tests to see if the get name method works properly
     @Test
     public void getNameTest() throws Exception {
-        // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
-
         assertEquals("U1", u1.getName());
     }
 
     // Tests to see if the get attempted method works properly
     @Test
     public void getAttemptedTest() throws Exception {
-        // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
-
         assertEquals(10, u1.getAttempted());
     }
 
-    // Tests to see if the get attempted method works properly
+    // Tests to see if the get correct method works properly
     @Test
     public void getCorrectTest() throws Exception {
-        // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
-
         assertEquals(5, u1.getCorrect());
     }
 
     // Tests to see if the set id method works properly
     @Test
     public void setIdTest() throws Exception {
-        // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
         u1.setId(10);
 
         assertEquals(new Integer(10), u1.getId());
@@ -136,8 +124,6 @@ public class UserClassTest {
     // Tests to see if the set name method works properly
     @Test
     public void setNameTest() throws Exception {
-        // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
         u1.setName("U2");
 
         assertEquals("U2", u1.getName());
@@ -146,8 +132,6 @@ public class UserClassTest {
     // Tests to see if the set attempted method works properly
     @Test
     public void setAttemptedTest() throws Exception {
-        // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
         u1.setAttempted(20);
 
         assertEquals(20, u1.getAttempted());
@@ -156,8 +140,6 @@ public class UserClassTest {
     // Tests to see if the set correct method works properly
     @Test
     public void setCorrectTest() throws Exception {
-        // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
         u1.setCorrect(6);
 
         assertEquals(6, u1.getCorrect());

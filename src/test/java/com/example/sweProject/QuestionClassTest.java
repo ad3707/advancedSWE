@@ -37,6 +37,8 @@ public class QuestionClassTest {
     @Autowired
     private MockMvc mvc;
 
+    Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
+
     public static String asJsonString(final Object question) {
         try {
             return new ObjectMapper().writeValueAsString(question);
@@ -67,84 +69,62 @@ public class QuestionClassTest {
     @Test
     public void constructorTest() throws Exception {
         // Creates new question
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
+        Question q2 = new Question(1, "What is 1+2?", "1", "2", "3", "4", "C");
 
-        assertEquals(new Integer(1), q1.getId());
-        assertEquals("What is 1+1?", q1.getName());
-        assertEquals("1", q1.getA());
-        assertEquals("2", q1.getB());
-        assertEquals("3", q1.getC());
-        assertEquals("4", q1.getD());
-        assertEquals("B", q1.getAnswer());
+        assertEquals(new Integer(1), q2.getId());
+        assertEquals("What is 1+2?", q2.getName());
+        assertEquals("1", q2.getA());
+        assertEquals("2", q2.getB());
+        assertEquals("3", q2.getC());
+        assertEquals("4", q2.getD());
+        assertEquals("C", q2.getAnswer());
     }
 
     // Tests to see if the get id method works properly
     @Test
     public void getIdTest() throws Exception {
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
-
         assertEquals(new Integer(1), q1.getId());
     }
 
     // Tests to see if the get name method works properly
     @Test
     public void getNameTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
-
         assertEquals("What is 1+1?", q1.getName());
     }
 
-    // Tests to see if the get attempted method works properly
+    // Tests to see if the get choice A method works properly
     @Test
     public void getChoiceATest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
-
         assertEquals("1", q1.getA());
     }
 
-    // Tests to see if the get attempted method works properly
+    // Tests to see if the get choice B method works properly
     @Test
     public void getChoiceBTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
-
         assertEquals("2", q1.getB());
     }
 
-    // Tests to see if the get attempted method works properly
+    // Tests to see if the get choice C method works properly
     @Test
     public void getChoiceCTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
-
         assertEquals("3", q1.getC());
     }
 
-    // Tests to see if the get attempted method works properly
+    // Tests to see if the get choice D method works properly
     @Test
     public void getChoiceDTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
-
         assertEquals("4", q1.getD());
     }
 
-    // Tests to see if the get attempted method works properly
+    // Tests to see if the get answer method works properly
     @Test
     public void getAnswerTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
-
         assertEquals("B", q1.getAnswer());
     }
 
     // Tests to see if the set id method works properly
     @Test
     public void setIdTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
         q1.setId(10);
 
         assertEquals(new Integer(10), q1.getId());
@@ -153,58 +133,46 @@ public class QuestionClassTest {
     // Tests to see if the set name method works properly
     @Test
     public void setNameTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
         q1.setName("Q2");
 
         assertEquals("Q2", q1.getName());
     }
 
-    // Tests to see if the set attempted method works properly
+    // Tests to see if the set choice A method works properly
     @Test
     public void setChoiceATest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
         q1.setA("5");
 
         assertEquals("5", q1.getA());
     }
 
-    // Tests to see if the set attempted method works properly
+    // Tests to see if the set choice B method works properly
     @Test
     public void setChoiceBTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
         q1.setB("6");
 
         assertEquals("6", q1.getB());
     }
 
-    // Tests to see if the set attempted method works properly
+    // Tests to see if the set choice C method works properly
     @Test
     public void setChoiceCTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
         q1.setC("7");
 
         assertEquals("7", q1.getC());
     }
 
-    // Tests to see if the set attempted method works properly
+    // Tests to see if the set choice D method works properly
     @Test
     public void setChoiceDTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
         q1.setD("8");
 
         assertEquals("8", q1.getD());
     }
 
-    // Tests to see if the set attempted method works properly
+    // Tests to see if the set answer method works properly
     @Test
     public void setAnswerTest() throws Exception {
-        // Creates 3 users which different score percents
-        Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
         q1.setAnswer("A");
 
         assertEquals("A", q1.getAnswer());
