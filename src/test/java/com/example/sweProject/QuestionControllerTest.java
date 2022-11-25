@@ -3,6 +3,10 @@ package com.example.sweProject;
 import com.example.sweProject.entities.Question;
 import com.example.sweProject.repositories.QuestionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,12 +31,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class QuestionControllerTest {
-    private final String bearerToken =
-            "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InEyM0NreTdaTjROdEQ0R0Z6TGhhVSJ9.eyJpc3MiOiJodHRwczovL2Rldi1sYjBhaWJhYmZodWM2ZTZqLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJMc1ZBeFJtdnJtOHl4a3RxWE96ZERXV242bWxBeGQ2UEBjbGllbnRzIiwiYXVkIjoibG9jYWxob3N0OjgwODAiLCJpYXQiOjE2NjkxNzk0MjYsImV4cCI6MTY2OTI2NTgyNiwiYXpwIjoiTHNWQXhSbXZybTh5eGt0cVhPemREV1duNm1sQXhkNlAiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.XCOPvcWL24a4iuq42R78OybdzYhW-7HFXL-i22UuwpmT4tNtU42gmFoQFIZ7wEotcn7vPdffLPQdJ3v-c8uuJAArdJMWB2zx8nFl4w__CciB9RuxxASqBmfrcE4e-2mzjQ3fyRnyKIb3pSSmB_c22-YX128B4fFmvlmDNr2Gp7_akxXrpnQSoScd-be9yS5fb1QI9-bKlRTatMTTMum7elWrDOw-MyYHmFshs-pDWud30vHgSDTLZUxyTv3m89gJfA_0HKEiclBwH0u5CygVqnQBmLpxdvXWrYgfcMYV1Q5ibnEe4Gc1a90AuMQ_MaV9yE2qIZOoogdsnQlvQ9Fwrg";
     @MockBean
     QuestionRepository questionRepo;
     @Autowired
     private MockMvc mvc;
+
+    public static String getBearerToken() {
+        HttpResponse<String> response = Unirest.post(
+                        "https://dev-lb0aibabfhuc6e6j.us.auth0.com/oauth/token")
+                .header("content-type", "application/json")
+                .body("{\"client_id\":\"LsVAxRmvrm8yxktqXOzdDWWn6mlAxd6P\",\"client_secret\":\"DJeBImCv2Mi6Qbe3_m2mYPwAHSkuJO_YoXm_XlnWRg1B0myVdS4BPhO1BeaeCa3I\",\"audience\":\"localhost:8080\",\"grant_type\":\"client_credentials\"}")
+                .asString();
+
+        String responseBody = response.getBody();
+
+        try {
+            JSONObject jsonResponse = new JSONObject(responseBody);
+            String accessToken = jsonResponse.getString("access_token");
+            return "Bearer " + accessToken;
+        } catch (JSONException err) {
+            return null;
+        }
+    }
 
     public static String asJsonString(final Object question) {
         try {
@@ -75,7 +95,7 @@ public class QuestionControllerTest {
 
         mvc.perform(get("/questions")
                         .header("authorization",
-                                bearerToken)
+                                getBearerToken())
                         .accept("application/json"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("What is 1+1?"))
@@ -99,7 +119,7 @@ public class QuestionControllerTest {
                         .content(asJsonString(q))
                         .contentType("application/json")
                         .header("authorization",
-                                bearerToken)
+                                getBearerToken())
                         .accept("application/json"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -123,7 +143,7 @@ public class QuestionControllerTest {
                         .content(asJsonString(q))
                         .contentType("application/json")
                         .header("authorization",
-                                bearerToken)
+                                getBearerToken())
                         .accept("application/json"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -152,7 +172,7 @@ public class QuestionControllerTest {
                         .content(asJsonString(newQuestion))
                         .contentType("application/json")
                         .header("authorization",
-                                bearerToken)
+                                getBearerToken())
                         .accept("application/json"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -177,7 +197,7 @@ public class QuestionControllerTest {
                         .content(asJsonString(newQuestion))
                         .contentType("application/json")
                         .header("authorization",
-                                bearerToken)
+                                getBearerToken())
                         .accept("application/json"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").doesNotExist());
@@ -194,7 +214,7 @@ public class QuestionControllerTest {
 
         mvc.perform(delete("/questions/{id}", 31)
                         .header("authorization",
-                                bearerToken))
+                                getBearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value("What is 1+1?"))
@@ -212,7 +232,7 @@ public class QuestionControllerTest {
     public void testDeleteNonexistentQuestion() throws Exception {
         mvc.perform(delete("/questions/{id}", 100)
                         .header("authorization",
-                                bearerToken))
+                                getBearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").doesNotExist());
 
