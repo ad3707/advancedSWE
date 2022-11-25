@@ -12,7 +12,7 @@ Our API uses H2 database to store question banks for each client. Every client's
 
 ((Download SonarQube:**
 1. Download and install Java 11 on your system.
-2. Download the SonarQube Community Edition zip file (located here: https://www.sonarqube.org/success-download-community-edition/).
+2. Download the SonarQube Community Edition zip file (located [here](https://www.sonarqube.org/success-download-community-edition/).
 3. Unzip the downloaded file and rename the folder ‘sonarqube’
 4. Move this file inside your ‘advancedSWE’ folder (unable to push it to GitHub for some reason so need to do it this way)
 
