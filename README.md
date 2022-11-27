@@ -34,10 +34,12 @@ You can change the password to whatever you like since this will be local to you
 
 **Run Sonarcube in another terminal tab (can do directly from VSCode terminal):**
 It should look something like this (but will vary when you do it with your account)
+```
 ./mvnw test sonar:sonar \
   -Dsonar.projectKey=SWE-Questionnaire-API \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.login=sqp_c5c3a7e22937ee7d5eb02e7698fc99d383c859a1
+```
 
 Uses target folder to get unit test coverage report. Use “verify” instead of “test” for integration test
 
