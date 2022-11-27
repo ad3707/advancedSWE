@@ -9,11 +9,12 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserClassTest {
+public class UserEntityTest {
     User u1 = new User(1, "U1", 10, 5);
 
     public static String asJsonString(final Object question) {
@@ -26,7 +27,7 @@ public class UserClassTest {
 
     public static String getBearerToken() {
         HttpResponse<String> response = Unirest.post(
-                "https://dev-lb0aibabfhuc6e6j.us.auth0.com/oauth/token")
+                        "https://dev-lb0aibabfhuc6e6j.us.auth0.com/oauth/token")
                 .header("content-type", "application/json")
                 .body("{\"client_id\":\"LsVAxRmvrm8yxktqXOzdDWWn6mlAxd6P\",\"client_secret\":\"DJeBImCv2Mi6Qbe3_m2mYPwAHSkuJO_YoXm_XlnWRg1B0myVdS4BPhO1BeaeCa3I\",\"audience\":\"localhost:8080\",\"grant_type\":\"client_credentials\"}")
                 .asString();

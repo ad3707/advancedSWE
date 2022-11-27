@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class QuestionClassTest {
+public class QuestionEntityTest {
     Question q1 = new Question(1, "What is 1+1?", "1", "2", "3", "4", "B");
 
     public static String asJsonString(final Object question) {
@@ -27,7 +27,7 @@ public class QuestionClassTest {
 
     public static String getBearerToken() {
         HttpResponse<String> response = Unirest.post(
-                "https://dev-lb0aibabfhuc6e6j.us.auth0.com/oauth/token")
+                        "https://dev-lb0aibabfhuc6e6j.us.auth0.com/oauth/token")
                 .header("content-type", "application/json")
                 .body("{\"client_id\":\"LsVAxRmvrm8yxktqXOzdDWWn6mlAxd6P\",\"client_secret\":\"DJeBImCv2Mi6Qbe3_m2mYPwAHSkuJO_YoXm_XlnWRg1B0myVdS4BPhO1BeaeCa3I\",\"audience\":\"localhost:8080\",\"grant_type\":\"client_credentials\"}")
                 .asString();

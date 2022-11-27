@@ -106,7 +106,6 @@ public class QuestionControllerTest {
                 .andExpect(jsonPath("$[0].answer").value("A"));
     }
 
-
     // Test to see if a user can add a question
     @Test
     @Transactional
@@ -209,6 +208,7 @@ public class QuestionControllerTest {
     void testDeleteQuestion() throws Exception {
         Question questionToDelete =
                 new Question(31, "What is 1+1?", "1", "2", "3", "4", "b");
+        
         when(questionRepo.findBySpecificQuestion(any(), any())).thenReturn(
                 Optional.of(questionToDelete));
 

@@ -186,7 +186,6 @@ public class UserControllerTest {
     @Test
     @Transactional
     void testDeleteNonexistentUser() throws Exception {
-
         mvc.perform(delete("/users/{id}", 31)
                         .header("authorization",
                                 getBearerToken()))
