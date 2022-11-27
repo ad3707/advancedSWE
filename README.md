@@ -30,10 +30,9 @@ You can change the password to whatever you like since this will be local to you
 2. You will then be directed to a 'Create new project' page. Enter a project name of your choice with at least one non-digit. The project key will match 3. your project name. Click `set up` after you see green checkmarks on both input boxes.  
 4. You will then be directed to your app's 'Overview'. On that page, click `Locally`.  
 5. On the next page, you will be provided with a default token name. Click `Generate`, and then click `Continue`.  
-6. Select `maven` and copy the code. Replace the first line with: `./mvnw test sonar:sonar \`
-
-**Run Sonarcube in another terminal tab (can do directly from VSCode terminal):**
-It should look something like this (but will vary when you do it with your account)
+6. Select `maven` and copy the code block. Replace the first line with: `./mvnw test sonar:sonar \`
+7. Open another terminal (can do directly from VSCode terminal) and configure maven wrapper by running `./mvnw clean install`
+8. Run Sonarcube. It should look something like this (but will vary when you do it with your account):
 ```
 ./mvnw test sonar:sonar \
   -Dsonar.projectKey=SWE-Questionnaire-API \
