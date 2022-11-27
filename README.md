@@ -26,9 +26,11 @@ Our API uses H2 database to store question banks for each client. Every client's
 You can change the password to whatever you like since this will be local to your computer
 
 **Create a new project; follow the steps**
-
-**Select ‘maven’ and copy the code**
-**Replace the first line with:** ./mvnw test sonar:sonar \
+1. On the page with header 'How do you want to create your project?', select `Manually`.   
+2. You will then be directed to a 'Create new project' page. Enter a project name of your choice with at least one non-digit. The project key will match 3. your project name. Click `set up` after you see green checkmarks on both input boxes.  
+4. You will then be directed to your app's 'Overview'. On that page, click `Locally`.  
+5. On the next page, you will be provided with a default token name. Click `Generate`, and then click `Continue`.  
+6. Select `maven` and copy the code. Replace the first line with: `./mvnw test sonar:sonar \`
 
 **Run Sonarcube in another terminal tab (can do directly from VSCode terminal):**
 It should look something like this (but will vary when you do it with your account)
