@@ -42,7 +42,7 @@ You can change the password to whatever you like since this will be local to you
 
 Uses target folder to get unit test coverage report. Use “verify” instead of “test” for integration test
 
-**See results:** http://localhost:9000/dashboard?id=SWE-Questionnaire-API
+**See results:** http://localhost:9000/dashboard?id=SWE-Questionnaire-API, go to 'Overall Code' section
 
 **Go to “Overall Code” tab**
 - Bugs
