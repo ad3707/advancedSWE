@@ -49,7 +49,7 @@ public class QuestionClassTest {
         // Creates new question
         Question q2 = new Question(1, "What is 1+2?", "1", "2", "3", "4", "C");
 
-        assertEquals(new Integer(1), q2.getId());
+        assertEquals(Integer.valueOf(1), q2.getId());
         assertEquals("What is 1+2?", q2.getName());
         assertEquals("1", q2.getA());
         assertEquals("2", q2.getB());
@@ -61,7 +61,7 @@ public class QuestionClassTest {
     // Tests to see if the get id method works properly
     @Test
     void getIdTest() throws Exception {
-        assertEquals(new Integer(1), q1.getId());
+        assertEquals(Integer.valueOf(1), q1.getId());
     }
 
     // Tests to see if the get name method works properly
@@ -105,7 +105,7 @@ public class QuestionClassTest {
     void setIdTest() throws Exception {
         q1.setId(10);
 
-        assertEquals(new Integer(10), q1.getId());
+        assertEquals(Integer.valueOf(10), q1.getId());
     }
 
     // Tests to see if the set name method works properly

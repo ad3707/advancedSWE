@@ -48,7 +48,7 @@ public class UserClassTest {
         // Creates 3 users which different score percents
         User u2 = new User(2, "U2");
 
-        assertEquals(new Integer(2), u2.getId());
+        assertEquals(Integer.valueOf(2), u2.getId());
         assertEquals("U2", u2.getName());
         assertEquals(0, u2.getAttempted());
         assertEquals(0, u2.getCorrect());
@@ -60,7 +60,7 @@ public class UserClassTest {
         // Creates 3 users which different score percents
         User u3 = new User(3, "U3", 15, 8);
 
-        assertEquals(new Integer(3), u3.getId());
+        assertEquals(Integer.valueOf(3), u3.getId());
         assertEquals("U3", u3.getName());
         assertEquals(15, u3.getAttempted());
         assertEquals(8, u3.getCorrect());
@@ -69,7 +69,7 @@ public class UserClassTest {
     // Tests to see if the get id method works properly
     @Test
     void getIdTest() throws Exception {
-        assertEquals(new Integer(1), u1.getId());
+        assertEquals(Integer.valueOf(1), u1.getId());
     }
 
     // Tests to see if the get name method works properly
@@ -95,7 +95,7 @@ public class UserClassTest {
     void setIdTest() throws Exception {
         u1.setId(10);
 
-        assertEquals(new Integer(10), u1.getId());
+        assertEquals(Integer.valueOf(10), u1.getId());
     }
 
     // Tests to see if the set name method works properly
