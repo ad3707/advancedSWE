@@ -69,8 +69,11 @@ public class UserControllerTest {
     @Test
     void getUsers() throws Exception {
         User u = new User(3, "User1", 5, 2);
+
         List<User> allUsers = new ArrayList<>();
+
         allUsers.add(u);
+
         when(userRepo.findByClientId(any())).thenReturn(allUsers);
 
         mvc.perform(get("/users")
@@ -104,15 +107,35 @@ public class UserControllerTest {
 
     // Tests if client can post an incomplete user (no attempted/correct initially
     // defined)
+//    @Test
+//    @Transactional
+//    void testPostIncompleteUser() throws Exception {
+//        User user = new User(2, "User2");
+//        mvc.perform(post("/users")
+//                        .header("authorization",
+//                                getBearerToken())
+//                        .content(asJsonString(user))
+//                        .contentType("application/json")
+//                        .accept("application/json"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.id").exists())
+//                .andExpect(jsonPath("$.name").value("User2"))
+//                .andExpect(jsonPath("$.attempted").value(0))
+//                .andExpect(jsonPath("$.correct").value(0));
+//    }
+
     @Test
     @Transactional
-    void testPostIncompleteUser() throws Exception {
-        User user = new User(2, "User2");
-        when(userRepo.save(any())).thenReturn(user);
-        mvc.perform(post("/users")
+    void testGetSpecificUser() throws Exception {
+        User u = new User(2, "User2");
+
+        when(userRepo.findBySpecificUser(any(), any())).thenReturn(
+                Optional.of(u));
+
+        mvc.perform(get("/users/{id}", 2)
                         .header("authorization",
                                 getBearerToken())
-                        .content(asJsonString(user))
+                        .content(asJsonString(u))
                         .contentType("application/json")
                         .accept("application/json"))
                 .andExpect(status().isOk())

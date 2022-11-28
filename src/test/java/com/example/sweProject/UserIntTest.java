@@ -123,6 +123,6 @@ public class UserIntTest {
                 .andExpect(jsonPath("$.attempted").value(5))
                 .andExpect(jsonPath("$.correct").value(3));
 
-        assertThat(userRepo.findAll()).hasSize(0);
+        assertThat(userRepo.findAll()).isEmpty();
     }
 }

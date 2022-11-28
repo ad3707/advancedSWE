@@ -9,5 +9,4 @@ class SweProjectApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

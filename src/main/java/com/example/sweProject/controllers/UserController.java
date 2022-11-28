@@ -1,10 +1,7 @@
 package com.example.sweProject.controllers;
 
-import com.example.sweProject.entities.Question;
 import com.example.sweProject.entities.User;
-import com.example.sweProject.repositories.QuestionRepository;
 import com.example.sweProject.repositories.UserRepository;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,19 +13,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.PriorityQueue;
 
 @RestController
 @CrossOrigin
 
 public class UserController {
     private final UserRepository userRepository;
-    private final QuestionRepository questionRepository;
 
-    public UserController(final UserRepository userRepository,
-            final QuestionRepository questionRepository) {
+    public UserController(final UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.questionRepository = questionRepository;
     }
 
     // GET Mappings
@@ -41,7 +39,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public Optional<User> getUserById(final @PathVariable("id") Integer id,
-            final HttpServletRequest request) {
+                                      final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
         return this.userRepository.findBySpecificUser(ipAddr, id);
     }
@@ -49,7 +47,7 @@ public class UserController {
     // POST Mappings
     @PostMapping(value = "/users", produces = "application/json")
     public @ResponseBody User createNewUser(final @RequestBody User user,
-            final HttpServletRequest request) {
+                                            final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
         user.setClientId(ipAddr);
 
@@ -59,10 +57,11 @@ public class UserController {
     // PUT Mappings
     @PutMapping(value = "/users/{id}") // produces="application/json")
     public User updateUser(final @PathVariable("id") Integer id,
-            final @RequestBody User updatedUser,
-            final HttpServletRequest request) {
+                           final @RequestBody User updatedUser,
+                           final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
-        Optional<User> userToUpdateOptional = this.userRepository.findBySpecificUser(ipAddr, id);
+        Optional<User> userToUpdateOptional =
+                this.userRepository.findBySpecificUser(ipAddr, id);
 
         if (!userToUpdateOptional.isPresent()) {
             return null;
@@ -88,9 +87,10 @@ public class UserController {
     // DELETE Mappings
     @DeleteMapping("/users/{id}")
     public User deleteUser(final @PathVariable("id") Integer id,
-            final HttpServletRequest request) {
+                           final HttpServletRequest request) {
         String ipAddr = request.getRemoteAddr();
-        Optional<User> userToDeleteOptional = this.userRepository.findBySpecificUser(ipAddr, id);
+        Optional<User> userToDeleteOptional =
+                this.userRepository.findBySpecificUser(ipAddr, id);
         if (!userToDeleteOptional.isPresent()) {
             return null;
         }
@@ -102,7 +102,7 @@ public class UserController {
     // Get top k users
     @GetMapping("/leaderboard/{k}")
     public List<User> getTopKUsers(final @PathVariable("k") Integer k,
-            final HttpServletRequest request) {
+                                   final HttpServletRequest request) {
 
         if (k == null) {
             return Collections.emptyList();

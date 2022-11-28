@@ -131,6 +131,6 @@ public class QuestionIntTest {
                 .andExpect(jsonPath("$.d").value("4"))
                 .andExpect(jsonPath("$.answer").value("b"));
 
-        assertThat(questionRepo.findAll()).hasSize(0);
+        assertThat(questionRepo.findAll()).isEmpty();
     }
 }

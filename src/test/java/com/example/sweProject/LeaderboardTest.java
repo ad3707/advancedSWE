@@ -1,9 +1,6 @@
 package com.example.sweProject;
 
-import com.example.sweProject.controllers.UserController;
 import com.example.sweProject.entities.User;
-import com.example.sweProject.repositories.QuestionRepository;
-import com.example.sweProject.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
@@ -13,28 +10,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.transaction.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(classes = SweProjectApplication.class)
 @AutoConfigureMockMvc
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class LeaderboardTest {
-    @MockBean
-    UserRepository userRepo;
-    @MockBean
-    QuestionRepository questionRepo;
     @Autowired
     private MockMvc mvc;
-    @MockBean
-    private UserController userController;
 
     public static String asJsonString(final Object question) {
         try {
@@ -64,54 +55,93 @@ public class LeaderboardTest {
 
     // Tests to see if the client receives the correct top k users
     @Test
+    @Transactional
     void getTopKUsersTest() throws Exception {
         // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
-        User u2 = new User(1, "U2", 20, 5);
-        User u3 = new User(1, "U3", 5, 5);
+        User u1 = new User(null, "U1", 10, 5);
+        User u2 = new User(null, "U2", 20, 5);
+        User u3 = new User(null, "U3", 5, 5);
 
-        userRepo.save(u1);
-        userRepo.save(u2);
-        userRepo.save(u3);
+        mvc.perform(post("/users")
+                .header("authorization",
+                        getBearerToken())
+                .content(asJsonString(u1))
+                .contentType("application/json")
+                .accept("application/json"));
 
-        List<User> topKUsersList = new ArrayList<>();
-        topKUsersList.add(u3);
-        topKUsersList.add(u1);
+        mvc.perform(post("/users")
+                .header("authorization",
+                        getBearerToken())
+                .content(asJsonString(u2))
+                .contentType("application/json")
+                .accept("application/json"));
 
-        given(userController.getTopKUsers(2, eq(any()))).willReturn(
-                topKUsersList);
+        mvc.perform(post("/users")
+                .header("authorization",
+                        getBearerToken())
+                .content(asJsonString(u3))
+                .contentType("application/json")
+                .accept("application/json"));
 
-        List<User> actualResults = userController.getTopKUsers(2, eq(any()));
-        // Checks if it returns correctly
-        assertEquals(u3.getName(), actualResults.get(0).getName());
-        assertEquals(u1.getName(), actualResults.get(1).getName());
+        mvc.perform(get("/leaderboard/{k}", 3)
+                        .header("authorization",
+                                getBearerToken())
+                        .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("U3"))
+                .andExpect(jsonPath("$[1].name").value("U1"))
+                .andExpect(jsonPath("$[2].name").value("U2"));
     }
 
     // Tests to see if K can be greater than the population (assumed yes but result
     // will not be K length)
     @Test
+    @Transactional
     void getTopKUsersExceedSizeTest() throws Exception {
-        // Creates 3 users which different score percents
-        User u1 = new User(1, "U1", 10, 5);
-        User u2 = new User(1, "U2", 20, 5);
-        User u3 = new User(1, "U3", 5, 5);
+        //Creates 3 users which different score percents
+        User u1 = new User(null, "U1", 10, 5);
+        User u2 = new User(null, "U2", 20, 5);
+        User u3 = new User(null, "U3", 5, 5);
 
-        userRepo.save(u1);
-        userRepo.save(u2);
-        userRepo.save(u3);
+        mvc.perform(post("/users")
+                .header("authorization",
+                        getBearerToken())
+                .content(asJsonString(u1))
+                .contentType("application/json")
+                .accept("application/json"));
 
-        List<User> topKUsersList = new ArrayList<>();
-        topKUsersList.add(u3);
-        topKUsersList.add(u1);
-        topKUsersList.add(u2);
+        mvc.perform(post("/users")
+                .header("authorization",
+                        getBearerToken())
+                .content(asJsonString(u2))
+                .contentType("application/json")
+                .accept("application/json"));
 
-        given(userController.getTopKUsers(2, eq(any()))).willReturn(
-                topKUsersList);
+        mvc.perform(post("/users")
+                .header("authorization",
+                        getBearerToken())
+                .content(asJsonString(u3))
+                .contentType("application/json")
+                .accept("application/json"));
 
-        List<User> actualResults = userController.getTopKUsers(4, eq(any()));
-        // Checks if it returns correctly
-        assertEquals(u3.getName(), actualResults.get(0).getName());
-        assertEquals(u1.getName(), actualResults.get(1).getName());
-        assertEquals(u2.getName(), actualResults.get(2).getName());
+        mvc.perform(get("/leaderboard/{k}", 4)
+                        .header("authorization",
+                                getBearerToken())
+                        .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("U3"))
+                .andExpect(jsonPath("$[1].name").value("U1"))
+                .andExpect(jsonPath("$[2].name").value("U2"));
+    }
+
+    @Test
+    @Transactional
+    void getTopKUsersIsEmpty() throws Exception {
+        mvc.perform(get("/leaderboard/{k}", 4)
+                        .header("authorization",
+                                getBearerToken())
+                        .accept("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").doesNotExist());
     }
 }

@@ -2,6 +2,7 @@ package com.example.sweProject.controllers;
 
 import com.example.sweProject.entities.Question;
 import com.example.sweProject.repositories.QuestionRepository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @RestController
@@ -77,6 +77,7 @@ public class QuestionController {
         if (p.getName() != null) {
             questionToUpdate.setName(p.getName());
         }
+
         if (p.getA() != null) {
             questionToUpdate.setA(p.getA());
         }
