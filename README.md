@@ -373,8 +373,9 @@ Our client is a classroom platform that allows teachers to create exams for thei
 1. Download this repo: https://github.com/ad3707/advancedSWEClient/tree/main
 2. After downloading the repo, unzip it and open up the folder in VSCode.
 3. Go to the index.html file under views and in the bottom right click Go Live.
-4. Run the API service in another terminal. 
-5. While the API service is running, the client is able to use the functionalities of our API. 
+4. If you do not see the "Go Live" button, then install this: https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer
+5. Run the API service in another terminal. 
+6. While the API service is running, the client is able to use the functionalities of our API. 
 
 **To test submitting a question**
 1. Go to dashboard
