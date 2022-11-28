@@ -35,22 +35,25 @@ You can change the password to whatever you like since this will be local to you
 8. Run Sonarcube. It should look something like this (but will vary when you do it with your account):
 ```
 ./mvnw test sonar:sonar \
-  -Dsonar.projectKey=SWE-Questionnaire-API \
+  -Dsonar.projectKey=your-project-name \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.login=sqp_c5c3a7e22937ee7d5eb02e7698fc99d383c859a1
 ```
 
 Uses target folder to get unit test coverage report. Use “verify” instead of “test” for integration test
 
-**See results:** http://localhost:9000/dashboard?id=SWE-Questionnaire-API, go to 'Overall Code' section
-
-**Go to “Overall Code” tab**
+**See coverage results on localhost:** http://localhost:9000/dashboard?id=your-project-name, go to 'Overall Code' section and you should see a graph-based report of test coverage. Other information you can find:  
 - Bugs
 - Vulnerabilities
 - Security hotspots
 - Technical debt (how much time it will take to fix errors)
 - Code smells
 - Code coverage
+
+**See coverage results in project folder:** After running sonarqube, you can find an `index.html` file generated under `/target/site`. Once loaded in your browser, you should see something like this (currently we're at 88% coverage):  
+
+![PNG image](https://user-images.githubusercontent.com/113868845/204172978-a7536a1e-b1ea-4070-95aa-7d454c5faf3f.jpeg)
+
 
 ## How to Run Our Project
 
@@ -342,7 +345,68 @@ Template: "/leaderboard/{k}"
 
 You should see a list of users who have the 2 highest scores (in this case)
 
-**Checkstyle Reports**:
+
+### Our Client
+Our client is a classroom platform that allows teachers to create exams for their students. They can add questions, delete questions, update questions, add students to their class, delete students, update students, and retrieve the top students in their class by using our API service. 
+
+**To run the client:**
+1. Download this repo: https://github.com/ad3707/advancedSWEClient/tree/main
+2. After downloading the repo, unzip it and open up the folder in VSCode.
+3. Go to the index.html file under views and in the bottom right click Go Live.
+4. Run the API service in another terminal. 
+5. While the API service is running, the client is able to use the functionalities of our API. 
+
+**To test submitting a question**
+1. Go to dashboard
+2. Click on "Create Quiz" on the top right
+3. Fill out the form called "Add Question".
+4. Click "Submit Question"
+5. If you click "See Questions", you should see the question you created. 
+
+**To test updating a question**
+1. Go to dashboard
+2. Click on "Create Quiz" on the top right
+3. Fill out the form called "Update Question".
+4. Click "Update"
+5. If you click "See Questions", you should see updates you made to the specific question.  
+
+**To test deleting a question**
+1. Go to dashboard
+2. Click on "Create Quiz" on the top right
+3. Fill out the form called "Delete Question".
+4. Click "Delete"
+5. If you click "See Questions", the question you deleted, should not be there.
+
+**To test adding a student**
+1. Go to dashboard
+2. Click on "Class Info" on the top right
+3. Fill out the form called "Add Student".
+4. Click "Add"
+5. If you click "See All Students", you should see the student you added. 
+
+**To test updating a student**
+1. Go to dashboard
+2. Click on "Class Info" on the top right
+3. Fill out the form called "Update Student".
+4. Click "Update"
+5. If you click "See All Students", you should see updates you made to the specific student.  
+
+**To test deleting a student**
+1. Go to dashboard
+2. Click on "Class Info" on the top right
+3. Fill out the form called "Delete Student".
+4. Click "Delete"
+5. If you click "See All Students", the student you deletes, should not be there.
+
+**To See the Leaderboard**
+1. Go to dashboard
+2. Click on "Class Info" on the top right
+3. Fill out the form called "Leaderboard".
+4. Click "View Leaderboard"
+5. You should see the top k students in the leaderboard section. 
+
+
+### Checkstyle Reports:
 
 We are using Checkstyle's sun_checks ruleset. Although our code is not fully compliant with the rules it defines as of right now, you can see present errors by going into the folder styleReports --> site --> checkstyle.html. To see the up-to-date checkstyle report, run ./mvnw site. A new folder called "target" should appear in your workspace folder. Go to target --> site --> checkstyle.html. Right click on checkstyle.html and "reveal in finder". Then click on the checkstyle.html from finder and it should launch a web page with the error report.
 
