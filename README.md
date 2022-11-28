@@ -4,26 +4,47 @@ Our API is a question bank framework in which clients can create, update and del
 
 Our API uses H2 database to store question banks for each client. Every client's information is stored separately and cannot be accessed from another client. To use our API, the user needs to first boot up our Spring server by running `./mvnw spring-boot:run`. The user can then use curl commands to create, update or delete questions. Testing can be done by accessing our [Postman API](https://warped-comet-420882.postman.co/workspace/Questionnaire-API-Testing~8fba67a5-16c4-42c2-831b-9b0c3f9e6050/overview). To access our database, go to web broswer and enter `localhost:8080/h2-console`.
 
+## Authentication and Authorization
+A bearer token is needed in order to make CRUD commands to our API. Otherwise, 401 unauthorized errors will be received.
+
+To retrieve a bearer token, use the following curl command.
+
+```
+curl --request POST \
+  --url https://dev-lb0aibabfhuc6e6j.us.auth0.com/oauth/token \
+  --header 'content-type: application/json' \
+  --data '{"client_id":"LsVAxRmvrm8yxktqXOzdDWWn6mlAxd6P","client_secret":"DJeBImCv2Mi6Qbe3_m2mYPwAHSkuJO_YoXm_XlnWRg1B0myVdS4BPhO1BeaeCa3I","audience":"localhost:8080","grant_type":"client_credentials"}'
+```
+
+Use the bearer token provided in the response body and pass this in the request header when making CRUD commands.
+
+Here is an example of what the curl command would look like:
+```
+curl --request GET \
+  --url http://path_to_your_api/ \
+  --header 'authorization: Bearer {BEARER_TOKEN}'
+```
+
 ## SonarQube
 
 **Currently working with SonarCube locally (will integrate with CI GitHub Workflows soon)**
 
 **Pull most recent version of GitHub repository code:** we have put sonarcube in gitignore because it is a really big file. You only need to download it once for now
 
-((Download SonarQube:**
+Download SonarQube:
 1. Download and install Java 11 on your system.
 2. Download the SonarQube Community Edition zip file (located [here](https://www.sonarqube.org/success-download-community-edition/)).
 3. Unzip the downloaded file and rename the folder ‘sonarqube’
 4. Move this file inside your ‘advancedSWE’ folder (unable to push it to GitHub for some reason so need to do it this way)
 
 **To start Sonarcube server (run in terminal from advancedSWE folder; will take some time to load):**
-./sonarqube/bin/macosx-universal-64/sonar.sh console
+`./sonarqube/bin/macosx-universal-64/sonar.sh console`
 
 **Go to home page:** http://localhost:9000/
 	Username: admin
 	Password: admin
 
-You can change the password to whatever you like since this will be local to your computer
+You can change the password to whatever you like since this will be local to your computer.
 
 **Create a new project; follow the steps**
 1. On the page with header 'How do you want to create your project?', select `Manually`.   
@@ -40,7 +61,7 @@ You can change the password to whatever you like since this will be local to you
   -Dsonar.login=sqp_c5c3a7e22937ee7d5eb02e7698fc99d383c859a1
 ```
 
-Uses target folder to get unit test coverage report. Use “verify” instead of “test” for integration test
+Uses target folder to get unit test coverage report. Use “verify” instead of “test” for integration tests.
 
 **See coverage results on localhost:** http://localhost:9000/dashboard?id=your-project-name, go to 'Overall Code' section and you should see a graph-based report of test coverage. Other information you can find:  
 - Bugs
@@ -53,7 +74,6 @@ Uses target folder to get unit test coverage report. Use “verify” instead of
 **See coverage results in project folder:** After running sonarqube, you can find an `index.html` file generated under `/target/site`. Once loaded in your browser, you should see something like this (currently we're at 88% coverage):  
 
 ![PNG image](https://user-images.githubusercontent.com/113868845/204172978-a7536a1e-b1ea-4070-95aa-7d454c5faf3f.jpeg)
-
 
 ## How to Run Our Project
 
