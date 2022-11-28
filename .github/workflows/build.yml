@@ -1,4 +1,3 @@
-#TESTING
 name: SonarCloud
 on:
   push:
