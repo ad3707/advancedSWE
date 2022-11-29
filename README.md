@@ -29,55 +29,9 @@ curl --request GET \
 
 We have integrated static analysis with GitHub Workflows. Click the checkmark/'x' next to the most recent commit. Then click 'Details' for 'SonarCloud Code Analysis'. Scroll to bottom of page and click 'View more details on SonarCloud'.
 
-This will give you information about the code coverage, code smells, bugs, and vulnerabilities.
+This will give you information about the code coverage, code smells, bugs, and vulnerabilities 
 
-## SonarQube
-
-**Currently working with SonarCube locally**
-
-**Pull most recent version of GitHub repository code:** we have put sonarcube in gitignore because it is a really big file. You only need to download it once for now
-
-Download SonarQube:
-1. Download and install Java 11 on your system.
-2. Download the SonarQube Community Edition zip file (located [here](https://www.sonarqube.org/success-download-community-edition/)).
-3. Unzip the downloaded file and rename the folder ‘sonarqube’
-4. Move this file inside your ‘advancedSWE’ folder (unable to push it to GitHub for some reason so need to do it this way)
-
-**To start Sonarcube server (run in terminal from advancedSWE folder; will take some time to load):**
-`./sonarqube/bin/macosx-universal-64/sonar.sh console`
-
-**Go to home page:** http://localhost:9000/
-	Username: admin
-	Password: admin
-
-You can change the password to whatever you like since this will be local to your computer.
-
-**Create a new project; follow the steps**
-1. On the page with header 'How do you want to create your project?', select `Manually`.   
-2. You will then be directed to a 'Create new project' page. Enter a project name of your choice with at least one non-digit. The project key will match 3. your project name. Click `set up` after you see green checkmarks on both input boxes.  
-4. You will then be directed to your app's 'Overview'. On that page, click `Locally`.  
-5. On the next page, you will be provided with a default token name. Click `Generate`, and then click `Continue`.  
-6. Select `maven` and copy the code block. Replace the first line with: `./mvnw test sonar:sonar \`
-7. Open another terminal (can do directly from VSCode terminal) and configure maven wrapper by running `./mvnw clean install`
-8. Run Sonarcube. It should look something like this (but will vary when you do it with your account):
-```
-./mvnw test sonar:sonar \
-  -Dsonar.projectKey=your-project-name \
-  -Dsonar.host.url=http://localhost:9000 \
-  -Dsonar.login=sqp_c5c3a7e22937ee7d5eb02e7698fc99d383c859a1
-```
-
-Uses target folder to get unit test coverage report. Use “verify” instead of “test” for integration tests.
-
-**See coverage results on localhost:** http://localhost:9000/dashboard?id=your-project-name, go to 'Overall Code' section and you should see a graph-based report of test coverage. Other information you can find:  
-- Bugs
-- Vulnerabilities
-- Security hotspots
-- Technical debt (how much time it will take to fix errors)
-- Code smells
-- Code coverage
-
-**See coverage results in project folder:** After running sonarqube, you can find an `index.html` file generated under `/target/site`. Once loaded in your browser, you should see something like this (currently we're at 88% coverage):  
+**Currently we're at 88% coverage**
 
 ![PNG image](https://user-images.githubusercontent.com/113868845/204172978-a7536a1e-b1ea-4070-95aa-7d454c5faf3f.jpeg)
 
