@@ -34,6 +34,8 @@ This will give you information about the code coverage, code smells, bugs, and v
 **Currently we're at 88% coverage**
 
 ![PNG image](https://user-images.githubusercontent.com/113868845/204172978-a7536a1e-b1ea-4070-95aa-7d454c5faf3f.jpeg)
+![Screenshot](SonarCloudReport.png)
+
 
 ## How to Run Our Project
 
@@ -44,6 +46,7 @@ This will give you information about the code coverage, code smells, bugs, and v
 5. **Run Clean (run before running test if error comes up):** `./mvnw clean`
 
 ## How to Test Our Project on Postman
+<img width="1364" alt="Screen Shot 2022-11-29 at 11 32 51 AM" src="https://user-images.githubusercontent.com/36302020/204588018-970a1da0-2564-4a29-9704-5eebd7c76585.png">
 
 1. Run Spring-Boot from terminal: `./mvnw spring-boot:run`
 2. While it is running, go to Postman: https://warped-comet-420882.postman.co/workspace/Questionnaire-API-Testing~8fba67a5-16c4-42c2-831b-9b0c3f9e6050/collection/23969942-f4487392-6f96-4cf2-b49b-f86418ef93b8?ctx=documentation
