@@ -25,9 +25,15 @@ curl --request GET \
   --header 'authorization: Bearer {BEARER_TOKEN}'
 ```
 
+## SonarCloud
+
+We have integrated static analysis with GitHub Workflows. Click the checkmark/'x' next to the most recent commit. Then click 'Details' for 'SonarCloud Code Analysis'. Scroll to bottom of page and click 'View more details on SonarCloud'.
+
+This will give you information about the code coverage, code smells, bugs, and vulnerabilities.
+
 ## SonarQube
 
-**Currently working with SonarCube locally (will integrate with CI GitHub Workflows soon)**
+**Currently working with SonarCube locally**
 
 **Pull most recent version of GitHub repository code:** we have put sonarcube in gitignore because it is a really big file. You only need to download it once for now
 
