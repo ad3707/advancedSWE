@@ -373,7 +373,7 @@ You should see a list of users who have the 2 highest scores (in this case)
 
 
 ### Our Client
-Our client is a classroom platform that allows teachers to create exams for their students. They can add questions, delete questions, update questions, add students to their class, delete students, update students, and retrieve the top students in their class by using our API service. 
+Our client is a classroom platform that allows teachers to create exams for their students. They can add questions, delete questions, update questions, add students to their class, delete students, update students, and retrieve the top students in their class by using our API service. An example of some third party using our server for their own client is a company that hosts multiple trivia games such as geography, math, and history trivia where each category is their own client. 
 
 **To run the client:**
 1. Download this repo: https://github.com/ad3707/advancedSWEClient/tree/main
