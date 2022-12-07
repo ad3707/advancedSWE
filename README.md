@@ -36,6 +36,8 @@ This will give you information about the code coverage, code smells, bugs, and v
 ![PNG image](https://user-images.githubusercontent.com/113868845/204172978-a7536a1e-b1ea-4070-95aa-7d454c5faf3f.jpeg)
 ![Screenshot](SonarCloudReport.png)
 
+## Continuous Integration
+CI is accessible in the 'Actions' tab on our GitHub repo: https://github.com/ad3707/advancedSWE/actions
 
 ## How to Run Our Project
 
